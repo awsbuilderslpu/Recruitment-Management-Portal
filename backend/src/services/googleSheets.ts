@@ -1,11 +1,8 @@
-// lib/google-sheets.ts
-
 import { GoogleAuth } from 'google-auth-library';
 import { google, sheets_v4 } from 'googleapis';
-import { Application, Note, RoleAnswers } from './types';
+import { Application, Note, RoleAnswers } from '../types';
 
 const SCOPES = ['https://www.googleapis.com/auth/spreadsheets'];
-const NOTES_SHEET_NAME = 'Notes';
 
 async function getSheetsClient(): Promise<sheets_v4.Sheets> {
   const auth = new GoogleAuth({
@@ -18,16 +15,6 @@ async function getSheetsClient(): Promise<sheets_v4.Sheets> {
   return google.sheets({ version: 'v4', auth });
 }
 
-/**
- * Maps an Application ID to its 1-based row number in the Applications sheet.
- *
- * Examples (actual format on our sheet):
- *   AWS-2026-DEMO-0001 -> row 2
- *   AWS-2026-DEMO-0002 -> row 3
- *   AWS-2026-0001      -> row 2 (also handled)
- *
- * Returns null if the ID doesn't end with digits.
- */
 export function getApplicationRowNumber(applicationId: string): number | null {
   const match = applicationId.match(/(\d+)$/);
   if (!match) return null;
@@ -36,11 +23,6 @@ export function getApplicationRowNumber(applicationId: string): number | null {
   return num + 1; // header row is row 1, first application is row 2
 }
 
-/**
- * Fetches a single Application by ID by reading only that row (plus header).
- * Uses getApplicationRowNumber for direct row access. Returns null if the
- * computed row's Application ID does not match the requested one (safety).
- */
 export async function getApplicationById(
   applicationId: string
 ): Promise<Application | null> {
@@ -66,8 +48,6 @@ export async function getApplicationById(
 
   const app = parseRow(header, row, rowNumber);
 
-  // Safety: verify the ID in the computed row matches the request.
-  // Prevents returning the wrong candidate if the sheet is reordered.
   if (app.applicationId !== applicationId) return null;
 
   return app;
@@ -166,10 +146,6 @@ export async function updateApplicationStatus(
   });
 }
 
-/**
- * Fetches all notes for an application by reading only that row
- * and extracting every "Note N" column that has a value.
- */
 export async function getNotesForApplication(
   applicationId: string
 ): Promise<Note[]> {
@@ -180,7 +156,6 @@ export async function getNotesForApplication(
   const spreadsheetId = process.env.GOOGLE_SPREADSHEET_ID;
   const sheetName = process.env.GOOGLE_SHEET_NAME || 'Sheet1';
 
-  // Read header + this specific row only
   const response = await sheets.spreadsheets.values.batchGet({
     spreadsheetId,
     ranges: [
@@ -201,8 +176,7 @@ export async function getNotesForApplication(
     const cellValue = row[idx]?.toString().trim();
     if (!cellValue) return;
 
-    // Format: "<timestamp> | <author> | <note text>"
-    const parts = cellValue.split('|').map((p: any) => p.trim());
+    const parts = cellValue.split('|').map((p:any) => p.trim());
     if (parts.length < 3) return;
 
     const [timestamp, author, ...noteParts] = parts;
@@ -218,9 +192,6 @@ export async function getNotesForApplication(
   return notes;
 }
 
-/**
- * Appends a note to the first empty "Note N" column on the application's row.
- */
 export async function addNote(
   applicationId: string,
   author: string,
@@ -244,7 +215,6 @@ export async function addNote(
   const header = response.data.valueRanges?.[0]?.values?.[0] || [];
   const row = response.data.valueRanges?.[1]?.values?.[0] || [];
 
-  // Collect all "Note N" columns, sorted by N
   const noteColumns = header
     .map((h, idx) => ({ name: h?.toString().trim() ?? '', idx }))
     .filter((c) => /^Note \d+$/i.test(c.name))
@@ -258,7 +228,6 @@ export async function addNote(
     throw new Error('No "Note N" columns found in sheet header');
   }
 
-  // Find first empty one for this row
   const target = noteColumns.find((col) => {
     const v = row[col.idx]?.toString().trim();
     return !v;

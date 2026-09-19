@@ -1,7 +1,5 @@
-// app/api/applications/[id]/route.ts
-
 import { NextResponse } from 'next/server';
-import { getAllApplications } from '@/lib/google-sheets';
+import { getApplicationById } from '@/lib/google-sheets';
 
 export async function GET(
   request: Request,
@@ -9,10 +7,7 @@ export async function GET(
 ) {
   try {
     const { id } = await params;
-    const applications = await getAllApplications();
-    const application = applications.find(
-      (app) => app.applicationId === id
-    );
+    const application = await getApplicationById(id);
 
     if (!application) {
       return NextResponse.json(
@@ -23,7 +18,7 @@ export async function GET(
 
     return NextResponse.json({ success: true, data: application });
   } catch (error) {
-    console.error(`[GET /api/applications/${(await params).id}] Error:`, error);
+    console.error('[GET /api/applications/[id]] Error:', error);
     return NextResponse.json(
       {
         success: false,
