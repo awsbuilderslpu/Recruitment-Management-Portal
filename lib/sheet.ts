@@ -4,6 +4,8 @@ import { google } from "googleapis";
 import type {
   Application,
   ApplicationStatus,
+  Offer,
+  OfferStatus,
 } from "@/lib/types";
 
 /**
@@ -15,7 +17,9 @@ import type {
 const SHEET_NAMES = {
   APPLICATIONS: "Applications",
   NOTES: "Notes",
-  LOGS: "Logs"
+  LOGS: "Logs",
+  ANNOUNCEMENTS: "Announcement",
+  OFFERS: "Offers",
 } as const;
 
 const SPREADSHEET_ID =
@@ -275,6 +279,14 @@ function mapApplication(
  * APPLICATIONS
  * ============================================================
  */
+
+export type Announcement = {
+  id: string;
+  status: ApplicationStatus;
+  title: string;
+  message: string;
+  updatedAt: string;
+};
 
 export async function getAllApplications(): Promise<
   Application[]
@@ -871,3 +883,511 @@ export async function logApplicationStatusUpdate({
   };
 }
 
+export async function getAnnouncementByStatus(
+  status: ApplicationStatus
+): Promise<Announcement | null> {
+  const response =
+    await sheets.spreadsheets.values.get({
+      spreadsheetId: SPREADSHEET_ID,
+      range: `'${SHEET_NAMES.ANNOUNCEMENTS}'!A:E`,
+    });
+
+  const rows = response.data.values ?? [];
+
+  for (let index = 1; index < rows.length; index++) {
+    const row = rows[index];
+
+    if (
+      row[1]?.trim().toLowerCase() ===
+      status.trim().toLowerCase()
+    ) {
+      return {
+        id: row[0] ?? "",
+        status: row[1] as ApplicationStatus,
+        title: row[2] ?? "",
+        message: row[3] ?? "",
+        updatedAt: row[4] ?? "",
+      };
+    }
+  }
+
+  return null;
+}
+
+export async function getApplicationAnnouncement(
+  applicationId: string
+): Promise<Announcement | null> {
+  const application = await getApplication(applicationId);
+
+  if (!application) {
+    return null;
+  }
+
+  const announcementStatuses: ApplicationStatus[] = [
+    "Shortlisted",
+    "Interview Scheduled",
+    "Selected",
+    "Accepted Offer",
+  ];
+
+  if (!announcementStatuses.includes(application.status)) {
+    return null;
+  }
+
+  return getAnnouncementByStatus(application.status);
+}
+
+
+export async function createAnnouncement({
+  status,
+  title,
+  message,
+}: {
+  status: ApplicationStatus;
+  title: string;
+  message: string;
+}) {
+  const existing = await getAnnouncementByStatus(status);
+
+  if (existing) {
+    throw new Error(
+      `An announcement already exists for ${status}`
+    );
+  }
+
+  const trimmedTitle = title.trim();
+  const trimmedMessage = message.trim();
+
+  if (!trimmedTitle) {
+    throw new Error("Announcement title cannot be empty");
+  }
+
+  if (!trimmedMessage) {
+    throw new Error("Announcement message cannot be empty");
+  }
+
+  const id = `ANN-${Date.now()}`;
+  const updatedAt = new Date().toISOString();
+
+  const announcement = {
+    id,
+    status,
+    title: trimmedTitle,
+    message: trimmedMessage,
+    updatedAt,
+  };
+
+  await sheets.spreadsheets.values.append({
+    spreadsheetId: SPREADSHEET_ID,
+    range: `'${SHEET_NAMES.ANNOUNCEMENTS}'!A:E`,
+    valueInputOption: "USER_ENTERED",
+    insertDataOption: "INSERT_ROWS",
+    requestBody: {
+      values: [
+        [
+          announcement.id,
+          announcement.status,
+          announcement.title,
+          announcement.message,
+          announcement.updatedAt,
+        ],
+      ],
+    },
+  });
+
+  return {
+    success: true,
+    announcement,
+  };
+}
+
+export async function updateAnnouncement(
+  id: string,
+  {
+    title,
+    message,
+  }: {
+    title: string;
+    message: string;
+  }
+) {
+  if (!id.trim()) {
+    throw new Error("Announcement ID is required");
+  }
+
+  const trimmedTitle = title.trim();
+  const trimmedMessage = message.trim();
+
+  if (!trimmedTitle) {
+    throw new Error("Announcement title cannot be empty");
+  }
+
+  if (!trimmedMessage) {
+    throw new Error("Announcement message cannot be empty");
+  }
+
+  const response =
+    await sheets.spreadsheets.values.get({
+      spreadsheetId: SPREADSHEET_ID,
+      range: `'${SHEET_NAMES.ANNOUNCEMENTS}'!A:E`,
+    });
+
+  const rows = response.data.values ?? [];
+
+  for (let index = 1; index < rows.length; index++) {
+    if (rows[index][0]?.trim() !== id.trim()) {
+      continue;
+    }
+
+    const row = index + 1;
+    const updatedAt = new Date().toISOString();
+
+    const announcement = {
+      id: rows[index][0] ?? id.trim(),
+      status: rows[index][1] as ApplicationStatus,
+      title: trimmedTitle,
+      message: trimmedMessage,
+      updatedAt,
+    };
+
+    await sheets.spreadsheets.values.update({
+      spreadsheetId: SPREADSHEET_ID,
+      range: `'${SHEET_NAMES.ANNOUNCEMENTS}'!C${row}:E${row}`,
+      valueInputOption: "USER_ENTERED",
+      requestBody: {
+        values: [
+          [
+            announcement.title,
+            announcement.message,
+            announcement.updatedAt,
+          ],
+        ],
+      },
+    });
+
+    return {
+      success: true,
+      announcement,
+    };
+  }
+
+  throw new Error(
+    `Announcement ${id} does not exist`
+  );
+}
+
+export async function deleteAnnouncement(
+  id: string
+) {
+  const response =
+    await sheets.spreadsheets.values.get({
+      spreadsheetId: SPREADSHEET_ID,
+      range: `'${SHEET_NAMES.ANNOUNCEMENTS}'!A:E`,
+    });
+
+  const rows = response.data.values ?? [];
+
+  for (let index = 1; index < rows.length; index++) {
+    if (rows[index][0]?.trim() !== id.trim()) {
+      continue;
+    }
+
+    const row = index + 1;
+
+    await sheets.spreadsheets.values.clear({
+      spreadsheetId: SPREADSHEET_ID,
+      range: `'${SHEET_NAMES.ANNOUNCEMENTS}'!A${row}:E${row}`,
+      requestBody: {},
+    });
+
+    return {
+      success: true,
+      id,
+    };
+  }
+
+  throw new Error(
+    `Announcement ${id} does not exist`
+  );
+}
+
+export async function getAllAnnouncements(): Promise<
+  Announcement[]
+> {
+  const response =
+    await sheets.spreadsheets.values.get({
+      spreadsheetId: SPREADSHEET_ID,
+      range: `'${SHEET_NAMES.ANNOUNCEMENTS}'!A:E`,
+    });
+
+  const rows = response.data.values ?? [];
+
+  return rows
+    .slice(1)
+    .filter((row) =>
+      row.some(
+        (cell) =>
+          typeof cell === "string" &&
+          cell.trim() !== ""
+      )
+    )
+    .map((row) => ({
+      id: row[0] ?? "",
+      status: row[1] as ApplicationStatus,
+      title: row[2] ?? "",
+      message: row[3] ?? "",
+      updatedAt: row[4] ?? "",
+    }));
+}
+
+
+function mapOffer(row: string[]): Offer {
+  return {
+    offerId: row[0] ?? "",
+    applicationId: row[1] ?? "",
+    candidateName: row[2] ?? "",
+    candidateEmail: row[3] ?? "",
+    role: row[4] ?? "",
+    status: (row[5] as OfferStatus) ?? "Pending",
+    createdAt: row[6] ?? "",
+    createdByName: row[7] ?? "",
+    createdByEmail: row[8] ?? "",
+    createdByRole: row[9] ?? "",
+    acceptedAt: row[10] ?? "",
+    acceptedByEmail: row[11] ?? "",
+    updatedAt: row[12] ?? "",
+  };
+}
+
+export async function getOfferByApplicationId(
+  applicationId: string
+): Promise<Offer | null> {
+  const response =
+    await sheets.spreadsheets.values.get({
+      spreadsheetId: SPREADSHEET_ID,
+      range: `'${SHEET_NAMES.OFFERS}'!A:M`,
+    });
+
+  const rows = response.data.values ?? [];
+
+  for (let index = 1; index < rows.length; index++) {
+    const row = rows[index];
+
+    if (
+      row[1]?.trim().toLowerCase() ===
+      applicationId.trim().toLowerCase()
+    ) {
+      return mapOffer(row);
+    }
+  }
+
+  return null;
+}
+
+export async function getOffer(
+  offerId: string
+): Promise<Offer | null> {
+  const response =
+    await sheets.spreadsheets.values.get({
+      spreadsheetId: SPREADSHEET_ID,
+      range: `'${SHEET_NAMES.OFFERS}'!A:M`,
+    });
+
+  const rows = response.data.values ?? [];
+
+  for (let index = 1; index < rows.length; index++) {
+    const row = rows[index];
+
+    if (
+      row[0]?.trim().toLowerCase() ===
+      offerId.trim().toLowerCase()
+    ) {
+      return mapOffer(row);
+    }
+  }
+
+  return null;
+}
+
+
+export async function createOffer({
+  applicationId,
+  createdBy,
+}: {
+  applicationId: string;
+  createdBy: {
+    name: string;
+    email: string;
+    role: string;
+  };
+}): Promise<Offer> {
+  if (!applicationId.trim()) {
+    throw new Error("Application ID is required");
+  }
+
+  const application = await getApplication(
+    applicationId.trim()
+  );
+
+  if (!application) {
+    throw new Error(
+      `Application ${applicationId} does not exist`
+    );
+  }
+
+  if (application.status !== "Selected") {
+    throw new Error(
+      "An offer can only be created for a selected applicant"
+    );
+  }
+
+  /*
+   * One application = one offer.
+   * If an offer already exists, return it instead
+   * of creating a duplicate.
+   */
+  const existingOffer =
+    await getOfferByApplicationId(applicationId);
+
+  if (existingOffer) {
+    return existingOffer;
+  }
+
+  const now = new Date().toISOString();
+
+  const offer: Offer = {
+    offerId: `OFF-${Date.now()}`,
+    applicationId: application.applicationId,
+    candidateName: application.fullName,
+    candidateEmail: application.personalEmail,
+    role:
+      application.preferredRole ||
+      "AWS Student Builder Group Member",
+    status: "Pending",
+    createdAt: now,
+    createdByName: createdBy.name,
+    createdByEmail: createdBy.email,
+    createdByRole: createdBy.role,
+    acceptedAt: "",
+    acceptedByEmail: "",
+    updatedAt: now,
+  };
+
+  await sheets.spreadsheets.values.append({
+    spreadsheetId: SPREADSHEET_ID,
+    range: `'${SHEET_NAMES.OFFERS}'!A:M`,
+    valueInputOption: "USER_ENTERED",
+    insertDataOption: "INSERT_ROWS",
+    requestBody: {
+      values: [
+        [
+          offer.offerId,
+          offer.applicationId,
+          offer.candidateName,
+          offer.candidateEmail,
+          offer.role,
+          offer.status,
+          offer.createdAt,
+          offer.createdByName,
+          offer.createdByEmail,
+          offer.createdByRole,
+          offer.acceptedAt,
+          offer.acceptedByEmail,
+          offer.updatedAt,
+        ],
+      ],
+    },
+  });
+
+  return offer;
+}
+
+export async function acceptOffer({
+  offerId,
+  candidateEmail,
+}: {
+  offerId: string;
+  candidateEmail: string;
+}): Promise<Offer> {
+  const offer = await getOffer(offerId);
+
+  if (!offer) {
+    throw new Error("Offer not found");
+  }
+
+  if (
+    offer.candidateEmail.trim().toLowerCase() !==
+    candidateEmail.trim().toLowerCase()
+  ) {
+    throw new Error(
+      "You are not authorized to accept this offer"
+    );
+  }
+
+  if (offer.status === "Accepted") {
+    return offer;
+  }
+
+  if (offer.status !== "Pending") {
+    throw new Error(
+      "This offer cannot be accepted"
+    );
+  }
+
+  const response =
+    await sheets.spreadsheets.values.get({
+      spreadsheetId: SPREADSHEET_ID,
+      range: `'${SHEET_NAMES.OFFERS}'!A:M`,
+    });
+
+  const rows = response.data.values ?? [];
+
+  for (let index = 1; index < rows.length; index++) {
+    const row = rows[index];
+
+    if (
+      row[0]?.trim().toLowerCase() !==
+      offerId.trim().toLowerCase()
+    ) {
+      continue;
+    }
+
+    const rowNumber = index + 1;
+    const now = new Date().toISOString();
+
+    await sheets.spreadsheets.values.update({
+      spreadsheetId: SPREADSHEET_ID,
+      range: `'${SHEET_NAMES.OFFERS}'!F${rowNumber}:M${rowNumber}`,
+      valueInputOption: "USER_ENTERED",
+      requestBody: {
+        values: [
+          [
+            "Accepted",
+            offer.createdAt,
+            offer.createdByName,
+            offer.createdByEmail,
+            offer.createdByRole,
+            now,
+            candidateEmail,
+            now,
+          ],
+        ],
+      },
+    });
+
+    await updateApplicationStatus(
+      offer.applicationId,
+      "Accepted Offer"
+    );
+
+    return {
+      ...offer,
+      status: "Accepted",
+      acceptedAt: now,
+      acceptedByEmail: candidateEmail,
+      updatedAt: now,
+    };
+  }
+
+  throw new Error("Offer not found");
+}

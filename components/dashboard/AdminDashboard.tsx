@@ -171,15 +171,29 @@ export default function AdminDashboard({
               </p>
             </div>
 
-            <div className="text-left sm:text-right">
-              <div className="text-[9px] uppercase tracking-[0.14em] text-text-faint">
-                Signed in as
-              </div>
-              <div className="mt-1 text-[11px] font-medium">
-                {_user.name}
-              </div>
-              <div className="mt-0.5 text-[9px] text-text-faint">
-                {_user.role}
+            <div className="flex flex-col gap-4 sm:items-end">
+              <Link
+                href="/dashboard/announcements"
+                className="inline-flex items-center justify-center border border-border bg-surface px-4 py-2.5 text-[9px] font-medium uppercase tracking-widest text-foreground transition hover:border-border-strong hover:bg-surface-muted"
+              >
+                Manage announcements
+                <span className="ml-2 text-text-faint">
+                  →
+                </span>
+              </Link>
+
+              <div className="text-left sm:text-right">
+                <div className="text-[9px] uppercase tracking-[0.14em] text-text-faint">
+                  Signed in as
+                </div>
+
+                <div className="mt-1 text-[11px] font-medium">
+                  {_user.name}
+                </div>
+
+                <div className="mt-0.5 text-[9px] text-text-faint">
+                  {_user.role}
+                </div>
               </div>
             </div>
           </div>

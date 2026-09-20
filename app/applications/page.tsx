@@ -16,6 +16,8 @@ const STATUS_STYLES: Record<ApplicationStatus, string> = {
     "border-violet-500/20 bg-violet-500/5 text-violet-600 dark:text-violet-400",
   Rejected:
     "border-red-500/20 bg-red-500/5 text-red-600 dark:text-red-400",
+  "Accepted Offer":
+    "border-green-500/20 bg-green-500/5 text-green-600 dark:text-green-400",
 };
 
 export default async function ApplicationsPage() {

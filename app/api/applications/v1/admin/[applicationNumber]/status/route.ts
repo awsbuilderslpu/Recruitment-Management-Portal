@@ -5,6 +5,7 @@ import {
   getApplication,
   updateApplicationStatus,
   logApplicationStatusUpdate,
+  createOffer,
 } from "@/lib/sheet";
 import { sendApplicationStatusMail } from "@/lib/mail";
 import type { ApplicationStatus } from "@/lib/types";
@@ -165,6 +166,34 @@ export async function PATCH(
         "Application status log error:",
         error
     );
+    }
+
+    let offerCreated = false;
+    let offerError = "";
+
+    if (applicationStatus === "Selected") {
+    try {
+        await createOffer({
+        applicationId,
+        createdBy: {
+            name: auth.user.name,
+            email: auth.user.email,
+            role: auth.user.role,
+        },
+        });
+
+        offerCreated = true;
+    } catch (error) {
+        offerError =
+        error instanceof Error
+            ? error.message
+            : "Failed to create offer";
+
+        console.error(
+        "Create offer error:",
+        error
+        );
+    }
     }
 
     

@@ -79,6 +79,18 @@ function getStatusMail(
         senderName: SENDER_NAME,
         senderRole: SENDER_ROLE,
       };
+    
+    case "Accepted Offer":
+      return {
+        subject:
+          "AWS LPU Recruitment - Offer Accepted",
+        greeting: `Dear ${name},`,
+        heading: "Offer Accepted",
+        content:
+          "Congratulations! We are pleased to inform you that you have accepted the offer for the position at AWS LPU.\n\nPlease find the attached offer letter for your reference.\n\nPlease visit https://recruitment.awslpu.in for more information.",
+        senderName: SENDER_NAME,
+        senderRole: SENDER_ROLE,
+      };
   }
 }
 

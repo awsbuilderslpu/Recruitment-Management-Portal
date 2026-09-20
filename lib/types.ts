@@ -3,7 +3,8 @@ export type ApplicationStatus =
   | "Shortlisted"
   | "Interview Scheduled"
   | "Selected"
-  | "Rejected";
+  | "Rejected"
+  | "Accepted Offer";
 
 export interface Application {
   applicationId: string;
@@ -38,4 +39,23 @@ export interface Application {
   whyJoin: string;
 
   rowIndex: number;
+}
+
+
+export type OfferStatus = "Pending" | "Accepted";
+
+export interface Offer {
+  offerId: string;
+  applicationId: string;
+  candidateName: string;
+  candidateEmail: string;
+  role: string;
+  status: OfferStatus;
+  createdAt: string;
+  createdByName: string;
+  createdByEmail: string;
+  createdByRole: string;
+  acceptedAt: string;
+  acceptedByEmail: string;
+  updatedAt: string;
 }
