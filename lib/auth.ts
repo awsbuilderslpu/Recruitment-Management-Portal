@@ -71,3 +71,31 @@ export async function getCurrentUserRole(): Promise<string | null> {
 export async function isAuthenticated(): Promise<boolean> {
   return (await getCurrentUser()) !== null;
 }
+
+export async function requireAdminAccess() {
+  const user = await getCurrentUser();
+
+  if (!user) {
+    return {
+      authorized: false as const,
+      status: 401 as const,
+      user: null,
+    };
+  }
+
+  const role = user.role.toLowerCase();
+
+  if (role !== "admin" && role !== "core") {
+    return {
+      authorized: false as const,
+      status: 403 as const,
+      user,
+    };
+  }
+
+  return {
+    authorized: true as const,
+    status: 200 as const,
+    user,
+  };
+}

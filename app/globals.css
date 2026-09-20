@@ -11,13 +11,14 @@
    ========================================================= */
 
 :root {
-  --background: #f5f5f5;
+  /* Light theme */
+  --background: #ffffff;
   --foreground: #111111;
 
   --surface: #ffffff;
-  --surface-muted: #f5f5f5;
+  --surface-muted: #f7f7f7;
 
-  --border: #dedede;
+  --border: #e5e5e5;
   --border-strong: #d9d9d9;
 
   --text-primary: #111111;
@@ -30,6 +31,7 @@
 }
 
 .dark {
+  /* Dark theme */
   --background: #020617;
   --foreground: #f8fafc;
 
@@ -96,8 +98,10 @@ body {
   min-width: 320px;
   min-height: 100%;
   margin: 0;
+
   background: var(--background);
   color: var(--foreground);
+
   font-family: Arial, Helvetica, sans-serif;
 
   transition:
@@ -106,6 +110,7 @@ body {
 }
 
 /* Prevent long text / links from creating horizontal overflow */
+
 p,
 h1,
 h2,
@@ -119,6 +124,7 @@ span {
 }
 
 /* Images should never escape mobile containers */
+
 img,
 svg,
 video,
@@ -148,9 +154,9 @@ div {
 /* =========================================================
    DARK MODE COMPATIBILITY
    ---------------------------------------------------------
-   Your existing homepage still contains hardcoded colors.
-   These rules keep those sections working until the JSX is
-   migrated completely to semantic theme classes.
+   Existing homepage contains hardcoded colors.
+   These rules keep those sections working until the JSX
+   is migrated completely to semantic theme classes.
    ========================================================= */
 
 /* Backgrounds */
@@ -284,19 +290,11 @@ div {
    MOBILE / TABLET RESPONSIVENESS
    ========================================================= */
 
-/*
-   The homepage already uses Tailwind responsive utilities,
-   but some arbitrary values are very desktop-oriented.
-   These overrides make those existing values behave better
-   on smaller screens.
-*/
-
 /* ---------------------------------------------------------
    Small phones: 320px - 479px
    --------------------------------------------------------- */
 
 @media (max-width: 479px) {
-  /* General horizontal padding */
   .px-8 {
     padding-left: 1.25rem !important;
     padding-right: 1.25rem !important;
@@ -307,12 +305,10 @@ div {
     padding-right: 1.25rem !important;
   }
 
-  /* Hero */
   .min-h-\[calc\(100vh-120px\)\] {
     min-height: calc(100svh - 64px);
   }
 
-  /* Huge hero typography */
   .text-\[54px\] {
     font-size: 2.75rem !important;
     line-height: 0.98 !important;
@@ -326,7 +322,6 @@ div {
     font-size: 2.75rem !important;
   }
 
-  /* Section headings */
   .text-\[38px\] {
     font-size: 2rem !important;
     line-height: 1.05 !important;
@@ -346,13 +341,11 @@ div {
     font-size: 2.5rem !important;
   }
 
-  /* Hero paragraph */
   .text-\[17px\] {
     font-size: 0.95rem !important;
     line-height: 1.8 !important;
   }
 
-  /* Section vertical spacing */
   .py-24 {
     padding-top: 4rem !important;
     padding-bottom: 4rem !important;
@@ -363,7 +356,6 @@ div {
     padding-bottom: 5rem !important;
   }
 
-  /* Large hero gaps */
   .mt-24 {
     margin-top: 4rem !important;
   }
@@ -376,12 +368,10 @@ div {
     margin-top: 3rem !important;
   }
 
-  /* Hero decorative grid */
   [style*="backgroundSize: \"64px 64px\""] {
     background-size: 40px 40px !important;
   }
 
-  /* Orange glow */
   .h-125,
   .w-125 {
     height: 20rem !important;
@@ -394,79 +384,57 @@ div {
    --------------------------------------------------------- */
 
 @media (max-width: 639px) {
-  /* Navbar */
   nav {
     height: 4rem !important;
     padding-left: 1.25rem !important;
     padding-right: 1.25rem !important;
   }
 
-  /* Hide the desktop center navigation text */
   nav > div:nth-child(2) {
     display: none !important;
   }
 
-  /* Navbar right side stays compact */
   nav .gap-3 {
     gap: 0.5rem;
   }
 
-  /* Prevent navbar actions from becoming huge */
   nav a {
     white-space: nowrap;
   }
 
-  /* Dashboard / Logout buttons */
   nav a.px-4 {
     padding-left: 0.75rem !important;
     padding-right: 0.75rem !important;
   }
 
-  /* Hide Dashboard + Logout text on extremely small screens
-     while keeping Sign In available */
-  @media (max-width: 400px) {
-    nav a[href="/dashboard"],
-    nav a[href="/api/auth/logout"] {
-      display: none !important;
-    }
-  }
-
-  /* Hero */
   .max-w-375 {
     max-width: 100% !important;
   }
 
-  /* CTA */
   .mt-10.flex {
     align-items: flex-start;
   }
 
-  /* CTA button can use full width */
   .mt-10.flex a {
     min-height: 3rem;
   }
 
-  /* Stats / information strip */
   .sm\:grid-cols-3 {
     grid-template-columns: 1fr !important;
   }
 
-  /* Benefits */
   .sm\:grid-cols-2 {
     grid-template-columns: 1fr !important;
   }
 
-  /* Recruitment steps */
   .lg\:grid-cols-3 {
     grid-template-columns: 1fr !important;
   }
 
-  /* Builder tracks */
   .grid.sm\:grid-cols-2 {
     grid-template-columns: 1fr !important;
   }
 
-  /* Remove desktop-style borders where stacked */
   .sm\:border-r {
     border-right-width: 0 !important;
   }
@@ -475,7 +443,6 @@ div {
     border-bottom-width: 1px !important;
   }
 
-  /* Cards */
   .min-h-\[220px\] {
     min-height: 180px !important;
   }
@@ -484,17 +451,14 @@ div {
     min-height: 105px !important;
   }
 
-  /* Don't push card headings too far down on mobile */
   .mt-16 {
     margin-top: 2.5rem !important;
   }
 
-  /* Footer CTA */
   .max-w-\[850px\] {
     max-width: 100% !important;
   }
 
-  /* Text blocks */
   .max-w-\[540px\] {
     max-width: 100% !important;
   }
@@ -521,23 +485,19 @@ div {
    --------------------------------------------------------- */
 
 @media (min-width: 640px) and (max-width: 1023px) {
-  /* Slightly smaller hero */
   .sm\:text-\[76px\] {
     font-size: 4.75rem !important;
   }
 
-  /* Section headings */
   .text-\[38px\] {
     font-size: 2.25rem !important;
   }
 
-  /* Reduce horizontal padding */
   .lg\:px-16 {
     padding-left: 2rem !important;
     padding-right: 2rem !important;
   }
 
-  /* Reduce vertical spacing */
   .py-24 {
     padding-top: 5rem !important;
     padding-bottom: 5rem !important;
@@ -548,16 +508,17 @@ div {
     padding-bottom: 6rem !important;
   }
 
-  /* Two-column grids */
   .lg\:grid-cols-\[0\.7fr_1\.3fr\],
   .lg\:grid-cols-\[0\.8fr_1\.2fr\],
   .lg\:grid-cols-\[1fr_1fr\] {
     grid-template-columns: 1fr !important;
   }
 
-  /* Recruitment cards */
   .lg\:grid-cols-3 {
-    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    grid-template-columns: repeat(
+      2,
+      minmax(0, 1fr)
+    ) !important;
   }
 }
 

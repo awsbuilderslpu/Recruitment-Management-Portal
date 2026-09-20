@@ -1,230 +1,206 @@
-
 import Link from "next/link";
+
+function ArrowIcon() {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      className="h-4 w-4"
+      aria-hidden="true"
+    >
+      <path
+        d="M5 12h13"
+        stroke="currentColor"
+        strokeWidth="1.8"
+        strokeLinecap="round"
+      />
+      <path
+        d="m13 6 6 6-6 6"
+        stroke="currentColor"
+        strokeWidth="1.8"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
+function LockIcon() {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      className="h-4 w-4"
+      aria-hidden="true"
+    >
+      <rect
+        x="5"
+        y="10"
+        width="14"
+        height="10"
+        rx="1.5"
+        stroke="currentColor"
+        strokeWidth="1.6"
+      />
+
+      <path
+        d="M8 10V7a4 4 0 0 1 8 0v3"
+        stroke="currentColor"
+        strokeWidth="1.6"
+        strokeLinecap="round"
+      />
+    </svg>
+  );
+}
 
 export default function LoginPage() {
   return (
-    <div className="relative flex flex-1 overflow-hidden">
+    <main className="relative min-h-[calc(100vh-64px)] overflow-hidden bg-background text-foreground">
       <div
-        className="pointer-events-none absolute inset-0 opacity-60 dark:opacity-25"
+        className="pointer-events-none absolute inset-0 opacity-40 dark:opacity-15"
         style={{
           backgroundImage:
             "linear-gradient(var(--border) 1px, transparent 1px), linear-gradient(90deg, var(--border) 1px, transparent 1px)",
-          backgroundSize: "clamp(42px, 5vw, 64px) clamp(42px, 5vw, 64px)",
+          backgroundSize: "64px 64px",
           maskImage:
             "linear-gradient(to bottom, black 0%, black 55%, transparent 100%)",
           WebkitMaskImage:
             "linear-gradient(to bottom, black 0%, black 55%, transparent 100%)",
         }}
       />
+      <div className="pointer-events-none absolute -right-40 top-1/4 h-96 w-96 rounded-full bg-accent/[0.06] blur-3xl" />
 
-      <div className="pointer-events-none absolute left-[65%] top-[10%] h-56 w-56 rounded-full bg-accent/5 blur-3xl sm:h-80 sm:w-80 lg:left-[70%] lg:top-[15%] lg:h-124 lg:w-124" />
+      <div className="relative mx-auto flex min-h-[calc(100vh-64px)] w-full max-w-7xl items-center px-5 py-12 sm:px-8 lg:px-12">
+        <div className="grid w-full gap-14 lg:grid-cols-[1fr_440px] lg:items-center lg:gap-24">
 
-      <div className="relative mx-auto flex w-full max-w-350 flex-1 items-center px-5 py-10 sm:px-8 sm:py-14 lg:grid lg:grid-cols-[1fr_480px] lg:gap-20 lg:px-16 lg:py-20">
-        <div className="hidden lg:block">
-          <div className="mb-7 flex items-center gap-3">
-            <span className="h-2 w-2 rounded-full bg-accent" />
+          <div className="hidden lg:block">
+            <div className="flex items-center gap-3">
+              <span className="h-2 w-2 rounded-full bg-accent" />
 
-            <span className="text-[10px] font-medium uppercase tracking-[0.18em] text-text-muted">
-              AWS LPU Recruitment
-            </span>
-          </div>
-
-          <h1 className="max-w-180 text-[clamp(3.5rem,5vw,4.5rem)] font-semibold leading-[0.98] tracking-[-0.055em]">
-            Welcome back.
-            <br />
-            <span className="text-text-muted">Let&apos;s build.</span>
-          </h1>
-
-          <p className="mt-8 max-w-142.5 text-[16px] leading-7 text-text-secondary">
-            Sign in to continue your recruitment journey, manage your
-            applications, explore opportunities, and stay connected with
-            AWS LPU.
-          </p>
-
-          <div className="mt-12 grid max-w-155 grid-cols-3 border-l border-t border-border">
-            <div className="min-h-31.25 border-b border-r border-border bg-surface/70 p-5">
-              <div className="text-[10px] text-text-faint">01</div>
-
-              <div className="mt-10 text-[13px] font-medium">
-                Applications
-              </div>
+              <span className="text-[10px] font-semibold uppercase tracking-[0.2em] text-text-muted">
+                AWS LPU
+              </span>
             </div>
 
-            <div className="min-h-31.25 border-b border-r border-border bg-surface/70 p-5">
-              <div className="text-[10px] text-text-faint">02</div>
+            <h1 className="mt-8 max-w-3xl text-[clamp(4rem,6vw,6rem)] font-semibold leading-[0.86] tracking-[-0.075em]">
+              Welcome
+              <br />
+              <span className="text-text-muted">
+                back.
+              </span>
+            </h1>
 
-              <div className="mt-10 text-[13px] font-medium">
-                Recruitment
-              </div>
-            </div>
+            <p className="mt-8 max-w-lg text-[15px] leading-7 text-text-secondary">
+              Your place to discover opportunities, manage applications,
+              and stay connected with the AWS LPU community.
+            </p>
 
-            <div className="min-h-31.25 border-b border-r border-border bg-surface/70 p-5">
-              <div className="text-[10px] text-text-faint">03</div>
+            <div className="mt-12 flex items-center gap-6 text-[10px] uppercase tracking-[0.14em] text-text-faint">
+              <span>Recruitment</span>
 
-              <div className="mt-10 text-[13px] font-medium">
-                Opportunities
-              </div>
+              <span className="h-1 w-1 rounded-full bg-border-strong" />
+
+              <span>Community</span>
+
+              <span className="h-1 w-1 rounded-full bg-border-strong" />
+              
+              <span>Opportunities</span>
             </div>
           </div>
 
-          <div className="mt-8 flex items-center gap-6 text-[10px] uppercase tracking-[0.12em] text-text-faint">
-            <span>Secure Identity</span>
-            <span className="h-1 w-1 rounded-full bg-border-strong" />
-            <span>Role Based Access</span>
-            <span className="h-1 w-1 rounded-full bg-border-strong" />
-            <span>AWS LPU</span>
-          </div>
-        </div>
+          <div className="w-full">
+            <div className="mb-8 lg:hidden">
+              <div className="flex items-center gap-3">
+                <span className="h-2 w-2 rounded-full bg-accent" />
 
-        <div className="w-full lg:w-auto">
-          <div className="border border-border bg-surface shadow-[0_12px_40px_rgba(0,0,0,0.055)] dark:shadow-[0_12px_40px_rgba(0,0,0,0.2)]">
-            <div className="border-b border-border px-5 py-5 sm:px-8 sm:py-6">
-              <div className="flex items-center justify-between gap-4">
-                <div>
-                  <div className="text-[9px] font-medium uppercase tracking-[0.14em] text-text-faint sm:text-[10px]">
-                    Recruitment Portal
+                <span className="text-[10px] font-semibold uppercase tracking-[0.2em] text-text-muted">
+                  AWS LPU
+                </span>
+              </div>
+
+              <h1 className="mt-6 text-4xl font-semibold leading-none tracking-[-0.055em]">
+                Welcome
+                <br />
+                <span className="text-text-muted">
+                  back.
+                </span>
+              </h1>
+            </div>
+
+            <div className="border border-border bg-surface">
+              <div className="border-b border-border px-6 py-6 sm:px-8">
+                <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-text-faint">
+                  Recruitment
+                </p>
+
+                <h2 className="mt-3 text-xl font-semibold tracking-[-0.03em]">
+                  Sign in to continue
+                </h2>
+
+                <p className="mt-2 max-w-sm text-[13px] leading-6 text-text-secondary">
+                  Use your AWS LPU account to access the recruitment
+                  platform.
+                </p>
+              </div>
+
+              <div className="px-6 py-7 sm:px-8 sm:py-8">
+                <a
+                  href="/api/auth/login"
+                  className="group flex min-h-12 w-full items-center justify-between border border-foreground bg-foreground px-4 text-[12px] font-medium text-background transition-opacity hover:opacity-85 sm:px-5 sm:text-[13px]"
+                >
+                  <span className="flex items-center gap-3">
+                    <span className="flex h-7 w-7 items-center justify-center rounded-full bg-background/10">
+                      <LockIcon />
+                    </span>
+
+                    Continue with AWS LPU
+                  </span>
+
+                  <span className="transition-transform group-hover:translate-x-1">
+                    <ArrowIcon />
+                  </span>
+                </a>
+
+                <div className="mt-7 flex gap-3 border-t border-border pt-6">
+                  <div className="mt-0.5 shrink-0 text-text-muted">
+                    <LockIcon />
                   </div>
 
-                  <h2 className="mt-2 text-[20px] font-medium tracking-[-0.03em] sm:text-[21px]">
-                    Sign in
-                  </h2>
-                </div>
-
-                <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-foreground">
-                  <svg
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    className="h-4 w-4 text-background"
-                  >
-                    <path
-                      d="M5 12h12"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                    />
-                    <path
-                      d="m13 6 6 6-6 6"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
-                </div>
-              </div>
-            </div>
-
-            <div className="px-5 py-7 sm:px-8 sm:py-9">
-              <p className="text-[13px] leading-6 text-text-muted">
-                Continue with your AWS LPU account to access your
-                recruitment workspace.
-              </p>
-
-              <a
-                href="/api/auth/login"
-                className="group mt-7 flex min-h-12 w-full items-center justify-center gap-3 border border-border-strong bg-background px-4 text-[12px] font-medium transition hover:border-text-muted hover:bg-surface-muted sm:mt-8 sm:text-[13px]"
-              >
-                <svg
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  className="h-5 w-5 shrink-0"
-                >
-                  <path
-                    d="M12 3 20 7.5v9L12 21l-8-4.5v-9L12 3Z"
-                    stroke="currentColor"
-                    strokeWidth="1.7"
-                    strokeLinejoin="round"
-                  />
-                  <path
-                    d="m8 9.5 4 2.5 4-2.5M12 12v5"
-                    stroke="currentColor"
-                    strokeWidth="1.7"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
-
-                <span>Continue with AWS LPU</span>
-
-                <svg
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  className="ml-1 h-4 w-4 shrink-0 text-text-faint transition-transform group-hover:translate-x-0.5"
-                >
-                  <path
-                    d="M5 12h13"
-                    stroke="currentColor"
-                    strokeWidth="1.7"
-                    strokeLinecap="round"
-                  />
-                  <path
-                    d="m13 6 6 6-6 6"
-                    stroke="currentColor"
-                    strokeWidth="1.7"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
-              </a>
-
-              <div className="mt-7 border-t border-border pt-6">
-                <div className="flex items-start gap-3">
-                  <svg
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    className="mt-0.5 h-4 w-4 shrink-0 text-text-muted"
-                  >
-                    <rect
-                      x="5"
-                      y="10"
-                      width="14"
-                      height="10"
-                      rx="1"
-                      stroke="currentColor"
-                      strokeWidth="1.6"
-                    />
-                    <path
-                      d="M8 10V7a4 4 0 0 1 8 0v3"
-                      stroke="currentColor"
-                      strokeWidth="1.6"
-                      strokeLinecap="round"
-                    />
-                  </svg>
-
                   <p className="text-[11px] leading-5 text-text-muted">
-                    Your credentials are handled by AWS LPU Identity
-                    Services. This portal never stores your AWS LPU
-                    password.
+                    Authentication is handled by AWS LPU Identity
+                    Services. Your password is never stored by this
+                    portal.
                   </p>
                 </div>
               </div>
+              <div className="border-t border-border bg-surface-muted px-6 py-4 sm:px-8">
+                <div className="flex items-center justify-between gap-4">
+                  <span className="text-[10px] uppercase tracking-[0.12em] text-text-faint">
+                    AWS LPU Identity
+                  </span>
+
+                  <span className="text-[10px] text-text-faint">
+                    Secure authentication
+                  </span>
+                </div>
+              </div>
             </div>
 
-            <div className="flex flex-col gap-2 border-t border-border bg-surface-muted px-5 py-4 sm:flex-row sm:items-center sm:justify-between sm:px-8">
-              <span className="text-[10px] text-text-faint">
-                AWS LPU Identity
-              </span>
+            <div className="mt-5 flex items-center justify-between px-1">
+              <Link
+                href="/"
+                className="text-[10px] text-text-faint transition-colors hover:text-text-secondary"
+              >
+                ← Back to AWS LPU
+              </Link>
 
               <span className="text-[10px] text-text-faint">
-                Secure authentication
+                recruitment.awslpu.in
               </span>
             </div>
-          </div>
-
-          <div className="mt-5 flex flex-col gap-2 px-1 sm:flex-row sm:items-center sm:justify-between sm:gap-0">
-            <Link
-              href="/"
-              className="text-[10px] text-text-faint transition hover:text-text-secondary"
-            >
-              ← Back to recruitment
-            </Link>
-
-            <span className="text-[10px] text-text-faint">
-              recruitment.awslpu.in
-            </span>
           </div>
         </div>
       </div>
-    </div>
+    </main>
   );
 }
