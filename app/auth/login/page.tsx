@@ -68,7 +68,7 @@ export default function LoginPage() {
             "linear-gradient(to bottom, black 0%, black 55%, transparent 100%)",
         }}
       />
-      <div className="pointer-events-none absolute -right-40 top-1/4 h-96 w-96 rounded-full bg-accent/[0.06] blur-3xl" />
+      <div className="pointer-events-none absolute -right-40 top-1/4 h-96 w-96 rounded-full bg-accent/6 blur-3xl" />
 
       <div className="relative mx-auto flex min-h-[calc(100vh-64px)] w-full max-w-7xl items-center px-5 py-12 sm:px-8 lg:px-12">
         <div className="grid w-full gap-14 lg:grid-cols-[1fr_440px] lg:items-center lg:gap-24">

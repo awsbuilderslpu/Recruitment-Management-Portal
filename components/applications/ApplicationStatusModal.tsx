@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { AlertTriangle } from "lucide-react";
 import type { ApplicationStatus } from "@/lib/types";
 
 const STATUSES: ApplicationStatus[] = [
@@ -169,6 +170,36 @@ export function ApplicationStatusModal({
               {status}
             </span>
           </div>
+
+          {status !== currentStatus && (
+            <div className="mt-5 border border-red-500 bg-red-50 px-4 py-3.5 text-red-700 dark:bg-red-950/30 dark:text-red-400">
+              <div className="flex items-start gap-3">
+                <AlertTriangle
+                  className="mt-0.5 h-4 w-4 shrink-0"
+                  strokeWidth={2.5}
+                />
+
+                <div>
+                  <p className="text-[10px] font-bold uppercase tracking-widest">
+                    Important — this action has side effects
+                  </p>
+
+                  <p className="mt-1.5 text-[10px] leading-5">
+                    Updating this status will automatically send
+                    an email notification to the applicant.
+                    This change will also be recorded in the
+                    recruitment audit log with your name,
+                    email, and role.
+                  </p>
+
+                  <p className="mt-2 text-[9px] font-semibold uppercase tracking-[0.08em]">
+                    Make sure the new status is correct before
+                    continuing.
+                  </p>
+                </div>
+              </div>
+            </div>
+          )}
 
           {error && (
             <div className="mt-4 border border-red-200 bg-red-50 px-3 py-2.5 text-[10px] text-red-600">

@@ -4,7 +4,9 @@ import { requireAdminAccess } from "@/lib/auth";
 import {
   getApplication,
   updateApplicationStatus,
+  logApplicationStatusUpdate,
 } from "@/lib/sheet";
+import { sendApplicationStatusMail } from "@/lib/mail";
 import type { ApplicationStatus } from "@/lib/types";
 
 const ALLOWED_STATUSES: ApplicationStatus[] = [
@@ -113,16 +115,96 @@ export async function PATCH(
       );
     }
 
+    const applicationStatus =
+      status as ApplicationStatus;
+
+    const previousStatus = application.status;
+
+    if (previousStatus === applicationStatus) {
+      return NextResponse.json(
+        {
+          success: false,
+          message: "Application is already in this status",
+        },
+        { status: 400 }
+      );
+    }
+
     await updateApplicationStatus(
       applicationId,
-      status as ApplicationStatus
+      applicationStatus
     );
+
+    let logCreated = false;
+    let logError: string | null = null;
+
+    try {
+    if (!auth.user) {
+        throw new Error("Authenticated user data is unavailable");
+    }
+
+    await logApplicationStatusUpdate({
+        applicationId,
+        previousStatus,
+        newStatus: applicationStatus,
+        changedBy: {
+        name: auth.user.name,
+        email: auth.user.email,
+        role: auth.user.role,
+        },
+    });
+
+    logCreated = true;
+    } catch (error) {
+    logError =
+        error instanceof Error
+        ? error.message
+        : "Failed to create status update log";
+
+    console.error(
+        "Application status log error:",
+        error
+    );
+    }
+
+    
+    let mailSent = false;
+    let mailError: string | null = null;
+
+    try {
+      await sendApplicationStatusMail({
+        to: application.personalEmail,
+        name: application.fullName,
+        status: applicationStatus,
+      });
+
+      mailSent = true;
+    } catch (error) {
+      mailError =
+        error instanceof Error
+          ? error.message
+          : "Failed to send application status email";
+
+      console.error(
+        "Application status email error:",
+        error
+      );
+    }
 
     return NextResponse.json({
       success: true,
       data: {
         applicationId,
-        status,
+        previousStatus,
+        status: applicationStatus,
+        logCreated,
+        mailSent,
+        ...(logError && {
+          logError,
+        }),
+        ...(mailError && {
+          mailError,
+        }),
       },
     });
   } catch (error) {

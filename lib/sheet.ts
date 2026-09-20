@@ -15,6 +15,7 @@ import type {
 const SHEET_NAMES = {
   APPLICATIONS: "Applications",
   NOTES: "Notes",
+  LOGS: "Logs"
 } as const;
 
 const SPREADSHEET_ID =
@@ -813,3 +814,60 @@ export async function getApplicationForView(
 
   return null;
 }
+
+export async function logApplicationStatusUpdate({
+  applicationId,
+  previousStatus,
+  newStatus,
+  changedBy,
+}: {
+  applicationId: string;
+  previousStatus: ApplicationStatus;
+  newStatus: ApplicationStatus;
+  changedBy: {
+    name: string;
+    email: string;
+    role: string;
+  };
+}) {
+  if (!applicationId.trim()) {
+    throw new Error("Application ID is required");
+  }
+
+  const application = await getApplication(applicationId);
+
+  if (!application) {
+    throw new Error(
+      `Application ${applicationId} does not exist`
+    );
+  }
+
+  await sheets.spreadsheets.values.append({
+    spreadsheetId: SPREADSHEET_ID,
+    range: `'${SHEET_NAMES.LOGS}'!A:G`,
+    valueInputOption: "USER_ENTERED",
+    insertDataOption: "INSERT_ROWS",
+    requestBody: {
+      values: [
+        [
+          new Date().toISOString(),
+          applicationId,
+          previousStatus,
+          newStatus,
+          changedBy.name,
+          changedBy.email,
+          changedBy.role,
+        ],
+      ],
+    },
+  });
+
+  return {
+    success: true,
+    applicationId,
+    previousStatus,
+    newStatus,
+    changedBy,
+  };
+}
+
