@@ -1,7 +1,5 @@
-// app/api/applications/[id]/status/route.ts
-
 import { NextResponse } from 'next/server';
-import { getAllApplications, updateApplicationStatus } from '@/lib/google-sheets';
+import { getApplicationById, updateApplicationStatus } from '@/lib/google-sheets';
 
 const VALID_STATUSES = [
   'Pending',
@@ -22,18 +20,12 @@ export async function PATCH(
 
     if (!status || !VALID_STATUSES.includes(status)) {
       return NextResponse.json(
-        {
-          success: false,
-          error: `Invalid status. Must be one of: ${VALID_STATUSES.join(', ')}`,
-        },
+        { success: false, error: `Invalid status. Must be one of: ${VALID_STATUSES.join(', ')}` },
         { status: 400 }
       );
     }
 
-    // Find the application row using its Application ID
-    const applications = await getAllApplications();
-    const application = applications.find((app) => app.applicationId === id);
-
+    const application = await getApplicationById(id);
     if (!application) {
       return NextResponse.json(
         { success: false, error: 'Application not found' },
@@ -41,7 +33,6 @@ export async function PATCH(
       );
     }
 
-    // Write the new status into the corresponding sheet cell
     await updateApplicationStatus(application.rowIndex, status);
 
     return NextResponse.json({

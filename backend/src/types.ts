@@ -1,5 +1,3 @@
-// lib/types.ts
-
 export type ApplicationStatus =
   | 'Pending'
   | 'Shortlisted'
@@ -7,10 +5,6 @@ export type ApplicationStatus =
   | 'Selected'
   | 'Rejected';
 
-/**
- * Role answers can contain any JSON-serializable value.
- * Different roles can have completely different question types.
- */
 export type RoleAnswerValue =
   | string
   | number
