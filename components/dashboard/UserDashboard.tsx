@@ -83,9 +83,9 @@ export default function UserDashboard({
         }}
       />
 
-      <div className="pointer-events-none absolute right-[-10%] top-[8%] h-72 w-72 rounded-full bg-accent/5 blur-3xl sm:h-[30rem] sm:w-[30rem]" />
+      <div className="pointer-events-none absolute right-[-10%] top-[8%] h-72 w-72 rounded-full bg-accent/5 blur-3xl sm:h-120 sm:w-120" />
 
-      <div className="relative mx-auto w-full max-w-[1500px] px-5 py-8 sm:px-8 sm:py-12 lg:px-16 lg:py-14">
+      <div className="relative mx-auto w-full max-w-375 px-5 py-8 sm:px-8 sm:py-12 lg:px-16 lg:py-14">
         <header className="flex flex-col gap-7 border-b border-border pb-8 sm:flex-row sm:items-end sm:justify-between">
           <div>
             <div className="mb-4 flex items-center gap-3">
@@ -104,7 +104,7 @@ export default function UserDashboard({
               </span>
             </h1>
 
-            <p className="mt-6 max-w-[620px] text-[13px] leading-6 text-text-secondary sm:text-[14px] sm:leading-7">
+            <p className="mt-6 max-w-155 text-[13px] leading-6 text-text-secondary sm:text-[14px] sm:leading-7">
               Your recruitment workspace for discovering opportunities,
               tracking your journey, and staying connected with AWS LPU.
             </p>
@@ -237,7 +237,7 @@ export default function UserDashboard({
                   </p>
 
                   <div
-                    className={`mt-5 text-[9px] uppercase tracking-[0.1em] ${
+                    className={`mt-5 text-[9px] uppercase tracking-widest ${
                       step.status === "Complete"
                         ? "text-accent"
                         : step.status === "Next"
@@ -260,11 +260,11 @@ export default function UserDashboard({
             </div>
 
             <div className="mt-3 flex flex-col justify-between gap-3 sm:flex-row sm:items-end">
-              <h2 className="text-[clamp(1.8rem,4vw,2.35rem)] font-semibold leading-[1] tracking-[-0.045em]">
+              <h2 className="text-[clamp(1.8rem,4vw,2.35rem)] font-semibold leading-none tracking-[-0.045em]">
                 Explore what&apos;s next.
               </h2>
 
-              <p className="max-w-[380px] text-[11px] leading-5 text-text-muted">
+              <p className="max-w-95 text-[11px] leading-5 text-text-muted">
                 Find opportunities to learn, build, collaborate, and
                 contribute with AWS LPU.
               </p>
@@ -275,7 +275,7 @@ export default function UserDashboard({
             {opportunities.map((opportunity) => (
               <div
                 key={opportunity.number}
-                className="group flex min-h-[220px] flex-col border-b border-r border-border bg-surface p-6 transition-colors duration-200 hover:bg-surface-muted sm:p-7"
+                className="group flex min-h-55 flex-col border-b border-r border-border bg-surface p-6 transition-colors duration-200 hover:bg-surface-muted sm:p-7"
               >
                 <div className="flex items-center justify-between">
                   <span className="text-[10px] text-text-faint">
@@ -290,7 +290,7 @@ export default function UserDashboard({
                     {opportunity.title}
                   </h3>
 
-                  <p className="mt-3 max-w-[330px] text-[11px] leading-5 text-text-subtle">
+                  <p className="mt-3 max-w-82.5 text-[11px] leading-5 text-text-subtle">
                     {opportunity.description}
                   </p>
 
@@ -313,11 +313,11 @@ export default function UserDashboard({
                 Keep building
               </div>
 
-              <h2 className="mt-3 max-w-[650px] text-[clamp(1.8rem,4vw,2.5rem)] font-semibold leading-[1] tracking-[-0.045em]">
+              <h2 className="mt-3 max-w-162.5 text-[clamp(1.8rem,4vw,2.5rem)] font-semibold leading-none tracking-[-0.045em]">
                 Your next opportunity could start here.
               </h2>
 
-              <p className="mt-4 max-w-[600px] text-[11px] leading-6 opacity-60 sm:text-[12px]">
+              <p className="mt-4 max-w-150 text-[11px] leading-6 opacity-60 sm:text-[12px]">
                 Keep learning, keep building, and stay connected with the
                 AWS LPU community.
               </p>

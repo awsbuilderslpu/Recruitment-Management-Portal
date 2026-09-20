@@ -140,10 +140,10 @@ export default function Home() {
           }}
         />
 
-        <div className="pointer-events-none absolute left-[58%] top-[15%] h-56 w-56 rounded-full bg-accent/5 blur-3xl sm:h-80 sm:w-80 lg:left-[68%] lg:top-[20%] lg:h-[30rem] lg:w-[30rem]" />
+        <div className="pointer-events-none absolute left-[58%] top-[15%] h-56 w-56 rounded-full bg-accent/5 blur-3xl sm:h-80 sm:w-80 lg:left-[68%] lg:top-[20%] lg:h-120 lg:w-120" />
 
-        <div className="relative mx-auto flex w-full max-w-[1500px] flex-col px-5 pb-10 pt-12 sm:px-8 sm:pb-14 sm:pt-16 lg:px-16 lg:pb-16 lg:pt-20">
-          <div className="max-w-[1050px]">
+        <div className="relative mx-auto flex w-full max-w-375 flex-col px-5 pb-10 pt-12 sm:px-8 sm:pb-14 sm:pt-16 lg:px-16 lg:pb-16 lg:pt-20">
+          <div className="max-w-262.5">
             <div className="mb-6 flex items-center gap-3 sm:mb-8">
               <span className="h-2 w-2 shrink-0 rounded-full bg-accent" />
               <span className="text-[10px] font-medium uppercase tracking-[0.18em] text-text-muted sm:text-[11px]">
@@ -151,13 +151,13 @@ export default function Home() {
               </span>
             </div>
 
-            <h1 className="max-w-[1000px] text-[clamp(3.25rem,11vw,6rem)] font-semibold leading-[0.9] tracking-[-0.065em]">
+            <h1 className="max-w-250 text-[clamp(3.25rem,11vw,6rem)] font-semibold leading-[0.9] tracking-[-0.065em]">
               Build your
               <br />
               <span className="text-text-muted">next chapter.</span>
             </h1>
 
-            <p className="mt-7 max-w-[680px] text-[15px] leading-7 text-text-secondary sm:mt-8 sm:text-[17px] sm:leading-8">
+            <p className="mt-7 max-w-170 text-[15px] leading-7 text-text-secondary sm:mt-8 sm:text-[17px] sm:leading-8">
               Discover opportunities, build real things, connect with
               ambitious people, and take your next step with AWS LPU.
             </p>
@@ -184,7 +184,7 @@ export default function Home() {
               <div className="text-[10px] uppercase tracking-[0.14em] text-text-faint">
                 Opportunities
               </div>
-              <div className="mt-2 max-w-[280px] text-[12px] leading-5 text-text-secondary sm:text-[13px]">
+              <div className="mt-2 max-w-70 text-[12px] leading-5 text-text-secondary sm:text-[13px]">
                 Discover roles and programs built for ambitious students.
               </div>
             </div>
@@ -193,7 +193,7 @@ export default function Home() {
               <div className="text-[10px] uppercase tracking-[0.14em] text-text-faint">
                 Community
               </div>
-              <div className="mt-2 max-w-[280px] text-[12px] leading-5 text-text-secondary sm:text-[13px]">
+              <div className="mt-2 max-w-70 text-[12px] leading-5 text-text-secondary sm:text-[13px]">
                 Learn and build alongside a growing community of builders.
               </div>
             </div>
@@ -202,7 +202,7 @@ export default function Home() {
               <div className="text-[10px] uppercase tracking-[0.14em] text-text-faint">
                 Growth
               </div>
-              <div className="mt-2 max-w-[280px] text-[12px] leading-5 text-text-secondary sm:text-[13px]">
+              <div className="mt-2 max-w-70 text-[12px] leading-5 text-text-secondary sm:text-[13px]">
                 Turn curiosity into skills, projects, and opportunities.
               </div>
             </div>
@@ -211,19 +211,19 @@ export default function Home() {
       </section>
 
       <section className="border-b border-border bg-surface">
-        <div className="mx-auto max-w-[1500px] px-5 py-16 sm:px-8 sm:py-20 lg:px-16 lg:py-24">
+        <div className="mx-auto max-w-375 px-5 py-16 sm:px-8 sm:py-20 lg:px-16 lg:py-24">
           <div className="grid gap-10 lg:grid-cols-[0.7fr_1.3fr] lg:gap-16">
             <div>
               <div className="text-[10px] font-medium uppercase tracking-[0.16em] text-text-faint">
                 More than recruitment
               </div>
 
-              <h2 className="mt-4 max-w-[500px] text-[clamp(2rem,5vw,2.4rem)] font-semibold leading-[1.05] tracking-[-0.045em]">
+              <h2 className="mt-4 max-w-125 text-[clamp(2rem,5vw,2.4rem)] font-semibold leading-[1.05] tracking-[-0.045em]">
                 A place to start building.
               </h2>
             </div>
 
-            <div className="max-w-[720px]">
+            <div className="max-w-180">
               <p className="text-[15px] leading-7 text-text-secondary sm:text-[17px] sm:leading-8">
                 Recruitment is only one part of the journey. AWS LPU brings
                 together opportunities to learn, build, collaborate, and
@@ -262,21 +262,21 @@ export default function Home() {
       </section>
 
       <section className="border-b border-border bg-background">
-        <div className="mx-auto max-w-[1500px] px-5 py-16 sm:px-8 sm:py-20 lg:px-16 lg:py-24">
+        <div className="mx-auto max-w-375 px-5 py-16 sm:px-8 sm:py-20 lg:px-16 lg:py-24">
           <div className="flex flex-col justify-between gap-8 lg:flex-row lg:items-end lg:gap-10">
             <div>
               <div className="text-[10px] font-medium uppercase tracking-[0.16em] text-text-faint">
                 The recruitment journey
               </div>
 
-              <h2 className="mt-4 max-w-[650px] text-[clamp(2rem,5vw,2.4rem)] font-semibold leading-[1.05] tracking-[-0.045em]">
+              <h2 className="mt-4 max-w-162.5 text-[clamp(2rem,5vw,2.4rem)] font-semibold leading-[1.05] tracking-[-0.045em]">
                 Clear steps.
                 <br />
                 No guessing.
               </h2>
             </div>
 
-            <p className="max-w-[420px] text-[13px] leading-6 text-text-muted sm:text-[14px]">
+            <p className="max-w-105 text-[13px] leading-6 text-text-muted sm:text-[14px]">
               From your first application to the moment you begin, the
               recruitment journey is designed to keep you informed at every
               stage.
@@ -287,7 +287,7 @@ export default function Home() {
             {recruitmentSteps.map((step) => (
               <div
                 key={step.number}
-                className="flex min-h-[190px] flex-col border-b border-r border-border bg-surface p-5 sm:min-h-[220px] sm:p-7"
+                className="flex min-h-47.5 flex-col border-b border-r border-border bg-surface p-5 sm:min-h-55 sm:p-7"
               >
                 <div className="flex items-center justify-between">
                   <span className="text-[10px] font-medium text-text-faint">
@@ -302,7 +302,7 @@ export default function Home() {
                     {step.title}
                   </h3>
 
-                  <p className="mt-3 max-w-[300px] text-[12px] leading-5 text-text-subtle">
+                  <p className="mt-3 max-w-75 text-[12px] leading-5 text-text-subtle">
                     {step.description}
                   </p>
                 </div>
@@ -322,7 +322,7 @@ export default function Home() {
           }}
         />
 
-        <div className="relative mx-auto max-w-[1500px] px-5 py-16 sm:px-8 sm:py-20 lg:px-16 lg:py-24">
+        <div className="relative mx-auto max-w-375 px-5 py-16 sm:px-8 sm:py-20 lg:px-16 lg:py-24">
           <div className="grid gap-12 lg:grid-cols-[0.8fr_1.2fr] lg:gap-16">
             <div>
               <div className="flex items-center gap-3">
@@ -333,13 +333,13 @@ export default function Home() {
                 </span>
               </div>
 
-              <h2 className="mt-6 max-w-[520px] text-[clamp(2.1rem,5vw,2.5rem)] font-semibold leading-[1.02] tracking-[-0.045em]">
+              <h2 className="mt-6 max-w-130 text-[clamp(2.1rem,5vw,2.5rem)] font-semibold leading-[1.02] tracking-[-0.045em]">
                 Don&apos;t just learn technology.
                 <br />
                 <span className="text-gray-500">Build with it.</span>
               </h2>
 
-              <p className="mt-6 max-w-[520px] text-[13px] leading-7 text-gray-400 sm:mt-7 sm:text-[14px]">
+              <p className="mt-6 max-w-130 text-[13px] leading-7 text-gray-400 sm:mt-7 sm:text-[14px]">
                 AWS Student Builder Groups bring students and builders
                 together to learn, collaborate, experiment, and create.
               </p>
@@ -357,7 +357,7 @@ export default function Home() {
                 {builderTracks.map((track, index) => (
                   <div
                     key={track}
-                    className="flex min-h-[105px] flex-col justify-between border-b border-r border-gray-800 p-5 sm:min-h-[125px] sm:p-6"
+                    className="flex min-h-26.25 flex-col justify-between border-b border-r border-gray-800 p-5 sm:min-h-31.25 sm:p-6"
                   >
                     <span className="text-[10px] text-gray-600">
                       0{index + 1}
@@ -384,14 +384,14 @@ export default function Home() {
       </section>
 
       <section className="border-b border-border bg-surface">
-        <div className="mx-auto max-w-[1500px] px-5 py-16 sm:px-8 sm:py-20 lg:px-16 lg:py-24">
+        <div className="mx-auto max-w-375 px-5 py-16 sm:px-8 sm:py-20 lg:px-16 lg:py-24">
           <div className="grid gap-12 lg:grid-cols-2 lg:gap-16">
             <div>
               <div className="text-[10px] font-medium uppercase tracking-[0.16em] text-text-faint">
                 Why AWS LPU
               </div>
 
-              <h2 className="mt-4 max-w-[560px] text-[clamp(2rem,5vw,2.4rem)] font-semibold leading-[1.05] tracking-[-0.045em]">
+              <h2 className="mt-4 max-w-140 text-[clamp(2rem,5vw,2.4rem)] font-semibold leading-[1.05] tracking-[-0.045em]">
                 Build skills that move with you.
               </h2>
             </div>
@@ -418,8 +418,8 @@ export default function Home() {
       </section>
 
       <section className="relative overflow-hidden bg-background">
-        <div className="mx-auto max-w-[1500px] px-5 py-20 text-center sm:px-8 sm:py-24 lg:px-16 lg:py-28">
-          <div className="mx-auto max-w-[850px]">
+        <div className="mx-auto max-w-375 px-5 py-20 text-center sm:px-8 sm:py-24 lg:px-16 lg:py-28">
+          <div className="mx-auto max-w-212.5">
             <div className="text-[10px] font-medium uppercase tracking-[0.18em] text-text-faint">
               Your next step
             </div>
@@ -430,7 +430,7 @@ export default function Home() {
               <span className="text-text-muted">what&apos;s next?</span>
             </h2>
 
-            <p className="mx-auto mt-6 max-w-[540px] text-[13px] leading-6 text-text-muted sm:mt-7 sm:text-[14px]">
+            <p className="mx-auto mt-6 max-w-135 text-[13px] leading-6 text-text-muted sm:mt-7 sm:text-[14px]">
               Sign in with your AWS LPU account to explore opportunities,
               manage your applications, and continue your journey.
             </p>
