@@ -4,7 +4,7 @@
    TAILWIND V4 DARK MODE
    ========================================================= */
 
-@variant dark (&:where(.dark, .dark *));
+@custom-variant dark (&:where(.dark, .dark *));
 
 /* =========================================================
    THEME TOKENS
