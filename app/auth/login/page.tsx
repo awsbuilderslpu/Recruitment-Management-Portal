@@ -17,9 +17,9 @@ export default function LoginPage() {
         }}
       />
 
-      <div className="pointer-events-none absolute left-[65%] top-[10%] h-56 w-56 rounded-full bg-accent/5 blur-3xl sm:h-80 sm:w-80 lg:left-[70%] lg:top-[15%] lg:h-[31rem] lg:w-[31rem]" />
+      <div className="pointer-events-none absolute left-[65%] top-[10%] h-56 w-56 rounded-full bg-accent/5 blur-3xl sm:h-80 sm:w-80 lg:left-[70%] lg:top-[15%] lg:h-124 lg:w-124" />
 
-      <div className="relative mx-auto flex w-full max-w-[1400px] flex-1 items-center px-5 py-10 sm:px-8 sm:py-14 lg:grid lg:grid-cols-[1fr_480px] lg:gap-20 lg:px-16 lg:py-20">
+      <div className="relative mx-auto flex w-full max-w-350 flex-1 items-center px-5 py-10 sm:px-8 sm:py-14 lg:grid lg:grid-cols-[1fr_480px] lg:gap-20 lg:px-16 lg:py-20">
         <div className="hidden lg:block">
           <div className="mb-7 flex items-center gap-3">
             <span className="h-2 w-2 rounded-full bg-accent" />
@@ -29,20 +29,20 @@ export default function LoginPage() {
             </span>
           </div>
 
-          <h1 className="max-w-[720px] text-[clamp(3.5rem,5vw,4.5rem)] font-semibold leading-[0.98] tracking-[-0.055em]">
+          <h1 className="max-w-180 text-[clamp(3.5rem,5vw,4.5rem)] font-semibold leading-[0.98] tracking-[-0.055em]">
             Welcome back.
             <br />
             <span className="text-text-muted">Let&apos;s build.</span>
           </h1>
 
-          <p className="mt-8 max-w-[570px] text-[16px] leading-7 text-text-secondary">
+          <p className="mt-8 max-w-142.5 text-[16px] leading-7 text-text-secondary">
             Sign in to continue your recruitment journey, manage your
             applications, explore opportunities, and stay connected with
             AWS LPU.
           </p>
 
-          <div className="mt-12 grid max-w-[620px] grid-cols-3 border-l border-t border-border">
-            <div className="min-h-[125px] border-b border-r border-border bg-surface/70 p-5">
+          <div className="mt-12 grid max-w-155 grid-cols-3 border-l border-t border-border">
+            <div className="min-h-31.25 border-b border-r border-border bg-surface/70 p-5">
               <div className="text-[10px] text-text-faint">01</div>
 
               <div className="mt-10 text-[13px] font-medium">
@@ -50,7 +50,7 @@ export default function LoginPage() {
               </div>
             </div>
 
-            <div className="min-h-[125px] border-b border-r border-border bg-surface/70 p-5">
+            <div className="min-h-31.25 border-b border-r border-border bg-surface/70 p-5">
               <div className="text-[10px] text-text-faint">02</div>
 
               <div className="mt-10 text-[13px] font-medium">
@@ -58,7 +58,7 @@ export default function LoginPage() {
               </div>
             </div>
 
-            <div className="min-h-[125px] border-b border-r border-border bg-surface/70 p-5">
+            <div className="min-h-31.25 border-b border-r border-border bg-surface/70 p-5">
               <div className="text-[10px] text-text-faint">03</div>
 
               <div className="mt-10 text-[13px] font-medium">
