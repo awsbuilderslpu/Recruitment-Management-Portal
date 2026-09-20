@@ -53,7 +53,7 @@ export function MyApplicationView({
 }: Props) {
   return (
     <main className="min-h-screen bg-background text-foreground">
-      <div className="mx-auto w-full max-w-[1400px] px-5 py-8 sm:px-8 sm:py-10 lg:px-12 lg:py-12">
+      <div className="mx-auto w-full max-w-350 px-5 py-8 sm:px-8 sm:py-10 lg:px-12 lg:py-12">
         <header className="border-b border-border pb-7">
           <Link
             href="/dashboard"
@@ -325,7 +325,7 @@ function Field({
         {label}
       </p>
 
-      <p className="mt-2 break-words text-[11px] leading-5 text-text-secondary">
+      <p className="mt-2 wrap-break-word text-[11px] leading-5 text-text-secondary">
         {value || "—"}
       </p>
     </div>
@@ -366,7 +366,7 @@ function ExternalLinkField({
       <div className="border border-border px-4 py-3">
         <div className="flex items-center gap-2 text-text-faint">
           {icon}
-          <span className="text-[9px] font-medium uppercase tracking-[0.1em]">
+          <span className="text-[9px] font-medium uppercase tracking-widest">
             {label}
           </span>
         </div>
@@ -388,7 +388,7 @@ function ExternalLinkField({
       <div className="flex items-center gap-2 text-text-muted">
         {icon}
 
-        <span className="text-[9px] font-medium uppercase tracking-[0.1em]">
+        <span className="text-[9px] font-medium uppercase tracking-widest">
           {label}
         </span>
 
@@ -418,7 +418,7 @@ function InfoRow({
         {label}
       </p>
 
-      <p className="mt-1.5 break-words text-[10px] text-text-secondary">
+      <p className="mt-1.5 wrap-break-word text-[10px] text-text-secondary">
         {value || "—"}
       </p>
     </div>

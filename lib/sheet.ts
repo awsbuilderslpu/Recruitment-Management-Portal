@@ -13,8 +13,8 @@ import type {
  */
 
 const SHEET_NAMES = {
-  APPLICATIONS: "Sheet1",
-  NOTES: "Sheet2",
+  APPLICATIONS: "Applications",
+  NOTES: "Notes",
 } as const;
 
 const SPREADSHEET_ID =
