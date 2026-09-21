@@ -17,6 +17,8 @@ const SENDER_ROLE = "Recruitment Team";
 
 const WHATSAPP_INVITE = process.env.AWS_LPU_WHATSAPP_GROUP_INVITE_URL;
 
+const RECRUITMENT_GROUP_LINK = process.env.RECRUITMENT_WHATSAPP_GROUP_INVITE_URL;
+
 function getStatusMail(
   name: string,
   status: ApplicationStatus
@@ -41,7 +43,7 @@ function getStatusMail(
         greeting: `Dear ${name},`,
         heading: "Application Shortlisted",
         content:
-          "We are pleased to inform you that your application has been shortlisted for the next stage of the AWS LPU recruitment process.\n\nFurther details regarding the next stage will be shared with you shortly.\n\nPlease visit https://recruitment.awslpu.in for more information.",
+          `We are pleased to inform you that your application has been shortlisted for the next stage of the AWS LPU recruitment process.\n\nFurther details regarding the next stage will be shared with you shortly.\n\nJoin the AWSLPU WhatsApp group: ${RECRUITMENT_GROUP_LINK} | Do your part in making the AWS LPU community a better place.\n\nPlease visit https://recruitment.awslpu.in for more information.`,
         senderName: SENDER_NAME,
         senderRole: SENDER_ROLE,
       };
@@ -89,7 +91,7 @@ function getStatusMail(
         greeting: `Dear ${name},`,
         heading: "Offer Accepted",
         content:
-          "Congratulations! On accepting the offer, you are now a part of the AWS LPU team.\n\nPlease visit https://recruitment.awslpu.in for more information.\n\nJoin the AWSLPU WhatsApp group: ${WHATSAPP_INVITE} | Do your part in making the AWS LPU community a better place.\n\nNote: Do not share the AWS LPU WhatsApp group link with anyone other than the intended recipients.",
+          `Congratulations! On accepting the offer, you are now a part of the AWS LPU team.\n\nPlease visit https://recruitment.awslpu.in for more information.\n\nJoin the AWSLPU WhatsApp group: ${WHATSAPP_INVITE} | Do your part in making the AWS LPU community a better place.\n\nNote: Do not share the AWS LPU WhatsApp group link with anyone other than the intended recipients.`,
         senderName: SENDER_NAME,
         senderRole: SENDER_ROLE,
       };
