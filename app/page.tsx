@@ -1,68 +1,33 @@
 import Link from "next/link";
 
-const recruitmentSteps = [
+const opportunities = [
   {
-    number: "01",
-    title: "Discover",
+    type: "RECRUITMENT",
+    title: "Join AWS LPU",
     description:
-      "Explore opportunities, roles, and programs available through AWS LPU.",
+      "Apply to become part of the student community building, learning, and shipping with AWS.",
+    meta: "Applications open",
+    accent: "bg-orange-500",
   },
   {
-    number: "02",
-    title: "Apply",
+    type: "COMMUNITY",
+    title: "Builder Groups",
     description:
-      "Submit your application using your AWS LPU identity and keep everything in one place.",
+      "Learn cloud, AI, DevOps, serverless, and modern application development with fellow builders.",
+    meta: "Explore community",
+    accent: "bg-violet-500",
   },
   {
-    number: "03",
-    title: "Assess",
+    type: "EVENTS",
+    title: "Upcoming events",
     description:
-      "Complete the assessments and technical evaluations relevant to your opportunity.",
-  },
-  {
-    number: "04",
-    title: "Interview",
-    description:
-      "Move through the interview process with clear stages and timely updates.",
-  },
-  {
-    number: "05",
-    title: "Offer",
-    description:
-      "Receive your offer, review the details, and respond directly through the portal.",
-  },
-  {
-    number: "06",
-    title: "Begin",
-    description:
-      "Take the next step and start building with the AWS LPU community.",
+      "Workshops, technical sessions, hackathons, and community experiences throughout the year.",
+    meta: "View events",
+    accent: "bg-blue-500",
   },
 ];
 
-const benefits = [
-  {
-    title: "Build with AWS",
-    description:
-      "Work with cloud technologies and modern infrastructure while turning ideas into real products.",
-  },
-  {
-    title: "Learn by doing",
-    description:
-      "Go beyond theory through workshops, technical sessions, projects, and hands-on experiences.",
-  },
-  {
-    title: "Find your people",
-    description:
-      "Connect with students, builders, community leaders, and people who are equally curious about technology.",
-  },
-  {
-    title: "Create opportunities",
-    description:
-      "Build projects, participate in challenges, showcase your work, and open doors to what comes next.",
-  },
-];
-
-const builderTracks = [
+const tracks = [
   "Cloud & Infrastructure",
   "Artificial Intelligence",
   "Serverless",
@@ -71,30 +36,24 @@ const builderTracks = [
   "Application Development",
 ];
 
-const reasons = [
+const journey = [
   {
     number: "01",
-    title: "Industry exposure",
+    title: "Apply",
     description:
-      "Learn through technical sessions, community events, projects, and experiences connected to real-world technology.",
+      "Tell us about yourself, your skills, and what you want to build.",
   },
   {
     number: "02",
-    title: "Builder mindset",
+    title: "Build",
     description:
-      "Turn ideas into working systems instead of stopping at theory.",
+      "Take part in technical discussions, assessments, and community activities.",
   },
   {
     number: "03",
-    title: "Community",
+    title: "Contribute",
     description:
-      "Meet people who are learning, experimenting, leading, and building alongside you.",
-  },
-  {
-    number: "04",
-    title: "Opportunities",
-    description:
-      "Use your skills and experiences to discover what comes next.",
+      "Join the people building the next generation of AWS LPU experiences.",
   },
 ];
 
@@ -123,292 +82,245 @@ function ArrowIcon() {
   );
 }
 
+function PlusIcon() {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      className="h-4 w-4"
+      aria-hidden="true"
+    >
+      <path
+        d="M12 5v14M5 12h14"
+        stroke="currentColor"
+        strokeWidth="1.6"
+        strokeLinecap="round"
+      />
+    </svg>
+  );
+}
+
 export default function Home() {
   return (
-    <div className="flex min-h-full flex-1 flex-col overflow-x-hidden bg-background text-foreground">
+    <main className="min-h-screen bg-background text-foreground">
+      {/* =====================================================
+          HERO
+          ===================================================== */}
+
       <section className="relative overflow-hidden border-b border-border">
+        {/* Grid */}
         <div
-          className="pointer-events-none absolute inset-0 opacity-60 dark:opacity-25"
+          className="pointer-events-none absolute inset-0 opacity-50 dark:opacity-20"
           style={{
             backgroundImage:
               "linear-gradient(var(--border) 1px, transparent 1px), linear-gradient(90deg, var(--border) 1px, transparent 1px)",
-            backgroundSize: "clamp(42px, 5vw, 64px) clamp(42px, 5vw, 64px)",
+            backgroundSize: "64px 64px",
             maskImage:
-              "linear-gradient(to bottom, black 0%, black 62%, transparent 100%)",
+              "linear-gradient(to bottom, black 0%, black 55%, transparent 100%)",
             WebkitMaskImage:
-              "linear-gradient(to bottom, black 0%, black 62%, transparent 100%)",
+              "linear-gradient(to bottom, black 0%, black 55%, transparent 100%)",
           }}
         />
 
-        <div className="pointer-events-none absolute left-[58%] top-[15%] h-56 w-56 rounded-full bg-accent/5 blur-3xl sm:h-80 sm:w-80 lg:left-[68%] lg:top-[20%] lg:h-120 lg:w-120" />
+        {/* Decorative shapes */}
+        <div className="pointer-events-none absolute -right-32 top-20 h-96 w-96 rounded-full bg-orange-500/[0.07] blur-3xl" />
 
-        <div className="relative mx-auto flex w-full max-w-375 flex-col px-5 pb-10 pt-12 sm:px-8 sm:pb-14 sm:pt-16 lg:px-16 lg:pb-16 lg:pt-20">
-          <div className="max-w-262.5">
-            <div className="mb-6 flex items-center gap-3 sm:mb-8">
-              <span className="h-2 w-2 shrink-0 rounded-full bg-accent" />
-              <span className="text-[10px] font-medium uppercase tracking-[0.18em] text-text-muted sm:text-[11px]">
-                AWS LPU Recruitment
+        <div className="relative mx-auto max-w-7xl px-5 pb-16 pt-12 sm:px-8 sm:pb-20 sm:pt-16 lg:px-12 lg:pb-24 lg:pt-20">
+          {/* Eyebrow */}
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <span className="h-2 w-2 rounded-full bg-accent" />
+
+              <span className="text-[10px] font-semibold uppercase tracking-[0.2em] text-text-muted">
+                AWS LPU · Recruitment
               </span>
             </div>
 
-            <h1 className="max-w-250 text-[clamp(3.25rem,11vw,6rem)] font-semibold leading-[0.9] tracking-[-0.065em]">
-              Build your
-              <br />
-              <span className="text-text-muted">next chapter.</span>
-            </h1>
+            <span className="hidden text-[10px] uppercase tracking-[0.16em] text-text-faint sm:block">
+              2026 — 2027
+            </span>
+          </div>
 
-            <p className="mt-7 max-w-170 text-[15px] leading-7 text-text-secondary sm:mt-8 sm:text-[17px] sm:leading-8">
-              Discover opportunities, build real things, connect with
-              ambitious people, and take your next step with AWS LPU.
-            </p>
-
-            <div className="mt-8 flex flex-col items-start gap-4 sm:mt-10 sm:flex-row sm:items-center">
-              <Link
-                href="/auth/login"
-                className="group inline-flex h-12 w-full items-center justify-center bg-foreground px-6 text-[13px] font-medium text-background transition-opacity duration-200 hover:opacity-80 sm:w-auto sm:px-7"
-              >
-                Explore opportunities
-                <span className="ml-4 transition-transform duration-200 group-hover:translate-x-1">
-                  <ArrowIcon />
+          {/* Hero copy */}
+          <div className="mt-16 grid gap-12 lg:mt-24 lg:grid-cols-[1.2fr_0.8fr] lg:gap-20">
+            <div>
+              <h1 className="max-w-4xl text-[clamp(3.5rem,9vw,7.5rem)] font-semibold leading-[0.84] tracking-[-0.075em]">
+                Build
+                <br />
+                <span className="text-text-muted">
+                  what&apos;s next.
                 </span>
-              </Link>
+              </h1>
+            </div>
 
-              <span className="text-[11px] text-text-faint">
-                Sign in with your AWS LPU account
-              </span>
+            <div className="flex flex-col justify-end lg:pb-2">
+              <p className="max-w-md text-[15px] leading-7 text-text-secondary sm:text-[17px] sm:leading-8">
+                AWS LPU is a community of students who learn, build,
+                experiment, and create together.
+              </p>
+
+              <div className="mt-7 flex flex-col gap-3 sm:flex-row sm:items-center">
+                <Link
+                  href="/auth/login"
+                  className="group inline-flex h-12 items-center justify-center bg-foreground px-6 text-[13px] font-medium text-background transition-opacity hover:opacity-80"
+                >
+                  Explore opportunities
+
+                  <span className="ml-5 transition-transform group-hover:translate-x-1">
+                    <ArrowIcon />
+                  </span>
+                </Link>
+
+                <span className="text-[11px] text-text-faint">
+                  AWS LPU account required
+                </span>
+              </div>
             </div>
           </div>
 
-          <div className="mt-14 grid border-t border-border pt-5 sm:mt-20 sm:grid-cols-3 sm:pt-6 lg:mt-24">
-            <div className="border-b border-border pb-5 sm:border-b-0 sm:border-r sm:pb-0 sm:pr-8">
-              <div className="text-[10px] uppercase tracking-[0.14em] text-text-faint">
-                Opportunities
-              </div>
-              <div className="mt-2 max-w-70 text-[12px] leading-5 text-text-secondary sm:text-[13px]">
-                Discover roles and programs built for ambitious students.
-              </div>
+          {/* Bottom stats */}
+          <div className="mt-16 grid border-y border-border sm:mt-24 sm:grid-cols-3">
+            <div className="border-b border-border py-5 sm:border-b-0 sm:border-r sm:pr-8">
+              <p className="text-[10px] uppercase tracking-[0.16em] text-text-faint">
+                Focus
+              </p>
+
+              <p className="mt-2 text-sm font-medium">
+                Build · Learn · Contribute
+              </p>
             </div>
 
-            <div className="border-b border-border py-5 sm:border-b-0 sm:border-r sm:px-8 sm:py-0">
-              <div className="text-[10px] uppercase tracking-[0.14em] text-text-faint">
+            <div className="border-b border-border py-5 sm:border-b-0 sm:border-r sm:px-8">
+              <p className="text-[10px] uppercase tracking-[0.16em] text-text-faint">
                 Community
-              </div>
-              <div className="mt-2 max-w-70 text-[12px] leading-5 text-text-secondary sm:text-[13px]">
-                Learn and build alongside a growing community of builders.
-              </div>
+              </p>
+
+              <p className="mt-2 text-sm font-medium">
+                Students · Builders · Leaders
+              </p>
             </div>
 
-            <div className="pt-5 sm:pl-8 sm:pt-0">
-              <div className="text-[10px] uppercase tracking-[0.14em] text-text-faint">
-                Growth
-              </div>
-              <div className="mt-2 max-w-70 text-[12px] leading-5 text-text-secondary sm:text-[13px]">
-                Turn curiosity into skills, projects, and opportunities.
-              </div>
+            <div className="py-5 sm:pl-8">
+              <p className="text-[10px] uppercase tracking-[0.16em] text-text-faint">
+                Ecosystem
+              </p>
+
+              <p className="mt-2 text-sm font-medium">
+                AWS · LPU · Technology
+              </p>
             </div>
           </div>
         </div>
       </section>
+
+      {/* =====================================================
+          OPPORTUNITIES
+          ===================================================== */}
 
       <section className="border-b border-border bg-surface">
-        <div className="mx-auto max-w-375 px-5 py-16 sm:px-8 sm:py-20 lg:px-16 lg:py-24">
-          <div className="grid gap-10 lg:grid-cols-[0.7fr_1.3fr] lg:gap-16">
+        <div className="mx-auto max-w-7xl px-5 py-16 sm:px-8 sm:py-20 lg:px-12 lg:py-24">
+          <div className="flex flex-col justify-between gap-6 sm:flex-row sm:items-end">
             <div>
-              <div className="text-[10px] font-medium uppercase tracking-[0.16em] text-text-faint">
-                More than recruitment
-              </div>
+              <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-text-faint">
+                Start here
+              </p>
 
-              <h2 className="mt-4 max-w-125 text-[clamp(2rem,5vw,2.4rem)] font-semibold leading-[1.05] tracking-[-0.045em]">
-                A place to start building.
+              <h2 className="mt-4 text-[clamp(2.2rem,5vw,3.5rem)] font-semibold leading-[0.95] tracking-[-0.055em]">
+                Find your place.
               </h2>
             </div>
 
-            <div className="max-w-180">
-              <p className="text-[15px] leading-7 text-text-secondary sm:text-[17px] sm:leading-8">
-                Recruitment is only one part of the journey. AWS LPU brings
-                together opportunities to learn, build, collaborate, and
-                contribute to a community shaped by technology.
-              </p>
-
-              <p className="mt-5 text-[15px] leading-7 text-text-secondary sm:mt-6 sm:text-[17px] sm:leading-8">
-                Whether you are taking your first steps into cloud computing
-                or already building production-grade systems, there is room to
-                grow, experiment, and make something meaningful.
-              </p>
-            </div>
-          </div>
-
-          <div className="mt-14 grid border-t border-border sm:mt-20 sm:grid-cols-2 lg:grid-cols-4">
-            {benefits.map((benefit, index) => (
-              <div
-                key={benefit.title}
-                className="border-b border-border py-7 sm:px-6 sm:py-8 lg:border-b-0 lg:border-r lg:first:pl-0 lg:last:border-r-0 lg:last:pr-0"
-              >
-                <div className="text-[10px] text-text-faint">
-                  0{index + 1}
-                </div>
-
-                <h3 className="mt-6 text-[15px] font-medium">
-                  {benefit.title}
-                </h3>
-
-                <p className="mt-3 text-[12px] leading-5 text-text-subtle">
-                  {benefit.description}
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="border-b border-border bg-background">
-        <div className="mx-auto max-w-375 px-5 py-16 sm:px-8 sm:py-20 lg:px-16 lg:py-24">
-          <div className="flex flex-col justify-between gap-8 lg:flex-row lg:items-end lg:gap-10">
-            <div>
-              <div className="text-[10px] font-medium uppercase tracking-[0.16em] text-text-faint">
-                The recruitment journey
-              </div>
-
-              <h2 className="mt-4 max-w-162.5 text-[clamp(2rem,5vw,2.4rem)] font-semibold leading-[1.05] tracking-[-0.045em]">
-                Clear steps.
-                <br />
-                No guessing.
-              </h2>
-            </div>
-
-            <p className="max-w-105 text-[13px] leading-6 text-text-muted sm:text-[14px]">
-              From your first application to the moment you begin, the
-              recruitment journey is designed to keep you informed at every
-              stage.
+            <p className="max-w-sm text-sm leading-6 text-text-secondary">
+              Recruitment is only one doorway into AWS LPU. Explore
+              opportunities, community, and the things happening around you.
             </p>
           </div>
 
-          <div className="mt-12 grid border-l border-t border-border sm:mt-16 sm:grid-cols-2 lg:grid-cols-3">
-            {recruitmentSteps.map((step) => (
-              <div
-                key={step.number}
-                className="flex min-h-47.5 flex-col border-b border-r border-border bg-surface p-5 sm:min-h-55 sm:p-7"
+          <div className="mt-12 grid gap-3 lg:grid-cols-3">
+            {opportunities.map((opportunity) => (
+              <Link
+                key={opportunity.title}
+                href="/auth/login"
+                className="group relative flex min-h-80 flex-col overflow-hidden border border-border p-6 transition-colors hover:bg-surface-muted sm:p-7"
               >
                 <div className="flex items-center justify-between">
-                  <span className="text-[10px] font-medium text-text-faint">
-                    {step.number}
+                  <span className="flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.16em] text-text-faint">
+                    <span
+                      className={`h-2 w-2 rounded-full ${opportunity.accent}`}
+                    />
+                    {opportunity.type}
                   </span>
 
-                  <span className="h-1.5 w-1.5 rounded-full bg-text-faint" />
+                  <span className="transition-transform group-hover:translate-x-1">
+                    <ArrowIcon />
+                  </span>
                 </div>
 
-                <div className="mt-auto pt-10 sm:pt-16">
-                  <h3 className="text-[16px] font-medium">
-                    {step.title}
+                <div className="mt-auto">
+                  <p className="text-[10px] uppercase tracking-[0.14em] text-text-faint">
+                    {opportunity.meta}
+                  </p>
+
+                  <h3 className="mt-3 text-2xl font-semibold tracking-[-0.04em]">
+                    {opportunity.title}
                   </h3>
 
-                  <p className="mt-3 max-w-75 text-[12px] leading-5 text-text-subtle">
-                    {step.description}
+                  <p className="mt-3 max-w-sm text-[13px] leading-6 text-text-secondary">
+                    {opportunity.description}
                   </p>
                 </div>
-              </div>
+              </Link>
             ))}
           </div>
         </div>
       </section>
 
-      <section className="relative overflow-hidden border-b border-border bg-[#111] text-white dark:bg-black">
-        <div
-          className="pointer-events-none absolute inset-0 opacity-20"
-          style={{
-            backgroundImage:
-              "linear-gradient(#555 1px, transparent 1px), linear-gradient(90deg, #555 1px, transparent 1px)",
-            backgroundSize: "clamp(42px, 5vw, 64px) clamp(42px, 5vw, 64px)",
-          }}
-        />
+      {/* =====================================================
+          BUILDER SECTION
+          ===================================================== */}
 
-        <div className="relative mx-auto max-w-375 px-5 py-16 sm:px-8 sm:py-20 lg:px-16 lg:py-24">
-          <div className="grid gap-12 lg:grid-cols-[0.8fr_1.2fr] lg:gap-16">
+      <section className="border-b border-border bg-background">
+        <div className="mx-auto max-w-7xl px-5 py-16 sm:px-8 sm:py-20 lg:px-12 lg:py-24">
+          <div className="grid gap-12 lg:grid-cols-[0.75fr_1.25fr] lg:gap-24">
             <div>
-              <div className="flex items-center gap-3">
-                <span className="h-2 w-2 rounded-full bg-accent" />
-
-                <span className="text-[10px] font-medium uppercase tracking-[0.16em] text-gray-400">
-                  AWS Student Builder Groups
-                </span>
-              </div>
-
-              <h2 className="mt-6 max-w-130 text-[clamp(2.1rem,5vw,2.5rem)] font-semibold leading-[1.02] tracking-[-0.045em]">
-                Don&apos;t just learn technology.
-                <br />
-                <span className="text-gray-500">Build with it.</span>
-              </h2>
-
-              <p className="mt-6 max-w-130 text-[13px] leading-7 text-gray-400 sm:mt-7 sm:text-[14px]">
-                AWS Student Builder Groups bring students and builders
-                together to learn, collaborate, experiment, and create.
+              <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-text-faint">
+                What we build with
               </p>
 
-              <Link
-                href="/auth/login"
-                className="mt-8 inline-flex h-11 items-center border border-gray-600 px-6 text-[12px] font-medium text-white transition-colors duration-200 hover:border-gray-400 hover:bg-white/5"
-              >
-                Join the journey
-              </Link>
+              <h2 className="mt-4 max-w-lg text-[clamp(2.3rem,5vw,4rem)] font-semibold leading-[0.95] tracking-[-0.06em]">
+                Curiosity
+                <br />
+                becomes
+                <br />
+                <span className="text-text-muted">
+                  something real.
+                </span>
+              </h2>
+
+              <p className="mt-7 max-w-md text-sm leading-7 text-text-secondary">
+                Pick a technology, find people who are interested in the
+                same problems, and start building.
+              </p>
             </div>
 
-            <div>
-              <div className="grid border-l border-t border-gray-800 sm:grid-cols-2">
-                {builderTracks.map((track, index) => (
-                  <div
-                    key={track}
-                    className="flex min-h-26.25 flex-col justify-between border-b border-r border-gray-800 p-5 sm:min-h-31.25 sm:p-6"
-                  >
-                    <span className="text-[10px] text-gray-600">
+            <div className="grid border-l border-t border-border sm:grid-cols-2">
+              {tracks.map((track, index) => (
+                <div
+                  key={track}
+                  className="group flex min-h-40 flex-col justify-between border-b border-r border-border p-5 transition-colors hover:bg-surface-muted sm:p-7"
+                >
+                  <div className="flex items-center justify-between">
+                    <span className="text-[10px] text-text-faint">
                       0{index + 1}
                     </span>
 
-                    <span className="text-[12px] text-gray-300 sm:text-[13px]">
-                      {track}
+                    <span className="opacity-0 transition-opacity group-hover:opacity-100">
+                      <PlusIcon />
                     </span>
                   </div>
-                ))}
-              </div>
 
-              <div className="mt-7 border-t border-gray-800 pt-5 sm:mt-8 sm:pt-6">
-                <p className="text-[10px] leading-5 text-gray-600 sm:text-[11px]">
-                  AWS announced in 2026 that AWS Cloud Clubs are evolving
-                  into AWS Student Builder Groups, with the community
-                  spanning 600+ colleges and universities across 63
-                  countries.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section className="border-b border-border bg-surface">
-        <div className="mx-auto max-w-375 px-5 py-16 sm:px-8 sm:py-20 lg:px-16 lg:py-24">
-          <div className="grid gap-12 lg:grid-cols-2 lg:gap-16">
-            <div>
-              <div className="text-[10px] font-medium uppercase tracking-[0.16em] text-text-faint">
-                Why AWS LPU
-              </div>
-
-              <h2 className="mt-4 max-w-140 text-[clamp(2rem,5vw,2.4rem)] font-semibold leading-[1.05] tracking-[-0.045em]">
-                Build skills that move with you.
-              </h2>
-            </div>
-
-            <div className="grid gap-10 sm:grid-cols-2">
-              {reasons.map((reason) => (
-                <div key={reason.number}>
-                  <div className="text-[22px] font-semibold tracking-[-0.03em]">
-                    {reason.number}
-                  </div>
-
-                  <h3 className="mt-4 text-[15px] font-medium">
-                    {reason.title}
-                  </h3>
-
-                  <p className="mt-2 text-[12px] leading-5 text-text-subtle">
-                    {reason.description}
+                  <p className="text-sm font-medium">
+                    {track}
                   </p>
                 </div>
               ))}
@@ -417,37 +329,140 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="relative overflow-hidden bg-background">
-        <div className="mx-auto max-w-375 px-5 py-20 text-center sm:px-8 sm:py-24 lg:px-16 lg:py-28">
-          <div className="mx-auto max-w-212.5">
-            <div className="text-[10px] font-medium uppercase tracking-[0.18em] text-text-faint">
-              Your next step
+      {/* =====================================================
+          JOURNEY
+          ===================================================== */}
+
+      <section className="border-b border-border bg-surface">
+        <div className="mx-auto max-w-7xl px-5 py-16 sm:px-8 sm:py-20 lg:px-12 lg:py-24">
+          <div className="grid gap-10 lg:grid-cols-[0.65fr_1.35fr] lg:gap-20">
+            <div>
+              <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-text-faint">
+                Your journey
+              </p>
+
+              <h2 className="mt-4 max-w-md text-[clamp(2.3rem,5vw,3.75rem)] font-semibold leading-[0.95] tracking-[-0.055em]">
+                Three steps.
+                <br />
+                <span className="text-text-muted">
+                  Then you&apos;re in.
+                </span>
+              </h2>
             </div>
 
-            <h2 className="mt-5 text-[clamp(2.75rem,8vw,4rem)] font-semibold leading-[0.95] tracking-[-0.055em]">
-              Ready to build
+            <div className="divide-y border-y border-border">
+              {journey.map((item) => (
+                <div
+                  key={item.number}
+                  className="grid gap-5 py-7 sm:grid-cols-[80px_180px_1fr] sm:items-start sm:gap-8"
+                >
+                  <span className="text-[11px] font-medium text-text-faint">
+                    {item.number}
+                  </span>
+
+                  <h3 className="text-lg font-medium tracking-[-0.02em]">
+                    {item.title}
+                  </h3>
+
+                  <p className="max-w-md text-[13px] leading-6 text-text-secondary">
+                    {item.description}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* =====================================================
+          DARK COMMUNITY STATEMENT
+          ===================================================== */}
+
+      <section className="relative overflow-hidden bg-[#111] text-white dark:bg-black">
+        <div
+          className="pointer-events-none absolute inset-0 opacity-20"
+          style={{
+            backgroundImage:
+              "linear-gradient(#555 1px, transparent 1px), linear-gradient(90deg, #555 1px, transparent 1px)",
+            backgroundSize: "64px 64px",
+          }}
+        />
+
+        <div className="relative mx-auto max-w-7xl px-5 py-20 sm:px-8 lg:px-12 lg:py-28">
+          <div className="max-w-4xl">
+            <div className="flex items-center gap-3">
+              <span className="h-2 w-2 rounded-full bg-accent" />
+
+              <span className="text-[10px] font-semibold uppercase tracking-[0.18em] text-gray-400">
+                AWS Student Builder Groups
+              </span>
+            </div>
+
+            <h2 className="mt-8 text-[clamp(2.8rem,7vw,6rem)] font-semibold leading-[0.88] tracking-[-0.07em]">
+              Don&apos;t just
               <br />
-              <span className="text-text-muted">what&apos;s next?</span>
+              <span className="text-gray-500">
+                learn technology.
+              </span>
+              <br />
+              Build with it.
             </h2>
 
-            <p className="mx-auto mt-6 max-w-135 text-[13px] leading-6 text-text-muted sm:mt-7 sm:text-[14px]">
-              Sign in with your AWS LPU account to explore opportunities,
-              manage your applications, and continue your journey.
-            </p>
+            <div className="mt-10 flex flex-col justify-between gap-8 border-t border-gray-800 pt-7 sm:flex-row sm:items-end">
+              <p className="max-w-xl text-sm leading-7 text-gray-400">
+                A student-led environment for people who want to experiment,
+                collaborate, ship projects, and grow together.
+              </p>
+
+              <Link
+                href="/auth/login"
+                className="group inline-flex shrink-0 items-center gap-4 text-[12px] font-medium text-white"
+              >
+                Enter AWS LPU
+
+                <span className="transition-transform group-hover:translate-x-1">
+                  <ArrowIcon />
+                </span>
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* =====================================================
+          FINAL CTA
+          ===================================================== */}
+
+      <section className="bg-background">
+        <div className="mx-auto max-w-7xl px-5 py-20 sm:px-8 sm:py-24 lg:px-12 lg:py-32">
+          <div className="grid gap-10 lg:grid-cols-[1fr_auto] lg:items-end">
+            <div>
+              <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-text-faint">
+                Ready?
+              </p>
+
+              <h2 className="mt-4 max-w-3xl text-[clamp(3rem,7vw,6rem)] font-semibold leading-[0.86] tracking-[-0.07em]">
+                Your next
+                <br />
+                <span className="text-text-muted">
+                  chapter starts here.
+                </span>
+              </h2>
+            </div>
 
             <Link
               href="/auth/login"
-              className="group mt-8 inline-flex h-12 w-full items-center justify-center bg-foreground px-7 text-[13px] font-medium text-background transition-opacity duration-200 hover:opacity-80 sm:mt-9 sm:w-auto sm:px-8"
+              className="group inline-flex h-12 items-center justify-center bg-foreground px-7 text-[13px] font-medium text-background transition-opacity hover:opacity-80"
             >
               Get started
 
-              <span className="ml-4 transition-transform duration-200 group-hover:translate-x-1">
+              <span className="ml-5 transition-transform group-hover:translate-x-1">
                 <ArrowIcon />
               </span>
             </Link>
           </div>
         </div>
       </section>
-    </div>
+    </main>
   );
 }

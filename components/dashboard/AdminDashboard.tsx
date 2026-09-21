@@ -29,10 +29,14 @@ const statusStyles: Record<string, string> = {
     "border-red-500/20 bg-red-500/5 text-red-600 dark:text-red-400",
 };
 
-function StatusBadge({ status }: { status: Application["status"] }) {
+function StatusBadge({
+  status,
+}: {
+  status: Application["status"];
+}) {
   return (
     <span
-      className={`inline-flex items-center rounded-full border px-2.5 py-1 text-[9px] font-medium uppercase tracking-[0.08em] ${
+      className={`inline-flex rounded-full border px-2.5 py-1 text-[9px] font-medium uppercase tracking-[0.08em] ${
         statusStyles[status] ??
         "border-border bg-surface-muted text-text-muted"
       }`}
@@ -42,127 +46,89 @@ function StatusBadge({ status }: { status: Application["status"] }) {
   );
 }
 
-function Stat({
-  label,
-  value,
-}: {
-  label: string;
-  value: number;
-}) {
-  return (
-    <div className="border-r border-border px-5 py-5 last:border-r-0 sm:px-6">
-      <div className="text-[9px] font-medium uppercase tracking-[0.14em] text-text-faint">
-        {label}
-      </div>
-
-      <div className="mt-2 text-2xl font-semibold tracking-[-0.04em]">
-        {value}
-      </div>
-    </div>
-  );
-}
-
 export default function AdminDashboard({
-  user,
+  user: _user,
 }: AdminDashboardProps) {
   const [applications, setApplications] = useState<Application[]>([]);
+  const [needsAttention, setNeedsAttention] = useState<Application[]>(
+    []
+  );
+
+  const [stats, setStats] = useState({
+    total: 0,
+    pending: 0,
+    shortlisted: 0,
+    selected: 0,
+  });
+
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
-  const [status, setStatus] = useState<"All" | Application["status"]>(
-    "All"
-  );
+  const [status, setStatus] = useState<
+    "All" | Application["status"]
+  >("All");
   const [page, setPage] = useState(1);
 
   useEffect(() => {
-    let active = true;
-
-    async function loadApplications() {
+    async function loadDashboard() {
       try {
-        const response = await fetch("/api/applications", {
-          cache: "no-store",
-        });
+        const response = await fetch(
+          "/api/applications/v1/admin/dashboard",
+          { cache: "no-store" }
+        );
 
         if (!response.ok) {
-          throw new Error("Failed to load applications");
+          throw new Error("Failed to load dashboard");
         }
 
-        const data = await response.json();
+        const result = await response.json();
 
-        if (active) {
-          setApplications(
-            Array.isArray(data)
-              ? data
-              : Array.isArray(data.applications)
-                ? data.applications
-                : []
+        if (!result.success) {
+          throw new Error(
+            result.message || "Failed to load dashboard"
           );
         }
-      } catch {
-        if (active) {
-          setApplications([]);
-        }
+
+        setApplications(result.data.applications ?? []);
+        setNeedsAttention(result.data.needsAttention ?? []);
+        setStats(result.data.stats);
+      } catch (error) {
+        console.error(error);
+        setApplications([]);
+        setNeedsAttention([]);
       } finally {
-        if (active) {
-          setLoading(false);
-        }
+        setLoading(false);
       }
     }
 
-    loadApplications();
-
-    return () => {
-      active = false;
-    };
+    loadDashboard();
   }, []);
-
-  const stats = useMemo(() => {
-    return {
-      total: applications.length,
-      pending: applications.filter(
-        (application) => application.status === "Pending"
-      ).length,
-      shortlisted: applications.filter(
-        (application) => application.status === "Shortlisted"
-      ).length,
-      selected: applications.filter(
-        (application) => application.status === "Selected"
-      ).length,
-    };
-  }, [applications]);
 
   const filteredApplications = useMemo(() => {
     const query = search.trim().toLowerCase();
 
-    return applications
-      .filter((application) => {
-        if (
-          status !== "All" &&
-          application.status !== status
-        ) {
-          return false;
-        }
+    return applications.filter((application) => {
+      if (
+        status !== "All" &&
+        application.status !== status
+      ) {
+        return false;
+      }
 
-        if (!query) {
-          return true;
-        }
+      if (!query) return true;
 
-        return [
-          application.fullName,
-          application.universityEmail,
-          application.personalEmail,
-          application.registrationNumber,
-          application.program,
-          application.branch,
-          application.preferredRole,
-        ].some((value) =>
-          value.toLowerCase().includes(query)
-        );
-      })
-      .sort(
-        (a, b) =>
-          new Date(b.timestamp).getTime() -
-          new Date(a.timestamp).getTime()
+      return [
+        application.applicationId,
+        application.fullName,
+        application.universityEmail,
+        application.personalEmail,
+        application.registrationNumber,
+        application.program,
+        application.branch,
+        application.preferredRole,
+      ].some((value) =>
+        value?.toLowerCase().includes(query)
       );
+    });
   }, [applications, search, status]);
 
   const totalPages = Math.max(
@@ -172,89 +138,123 @@ export default function AdminDashboard({
 
   const currentPage = Math.min(page, totalPages);
 
-  const visibleApplications = filteredApplications.slice(
-    (currentPage - 1) * PAGE_SIZE,
-    currentPage * PAGE_SIZE
-  );
-
-  const needsAttention = useMemo(() => {
-    return applications
-      .filter(
-        (application) => application.status === "Pending"
-      )
-      .sort(
-        (a, b) =>
-          new Date(b.timestamp).getTime() -
-          new Date(a.timestamp).getTime()
-      )
-      .slice(0, 5);
-  }, [applications]);
+  const visibleApplications =
+    filteredApplications.slice(
+      (currentPage - 1) * PAGE_SIZE,
+      currentPage * PAGE_SIZE
+    );
 
   useEffect(() => {
     setPage(1);
   }, [search, status]);
 
   return (
-    <main className="min-h-screen bg-background text-foreground">
-      <div className="mx-auto w-full max-w-350 px-5 py-8 sm:px-8 sm:py-10 lg:px-12">
-        <header className="border-b border-border pb-7">
-          <div className="mb-3 flex items-center gap-3">
-            <span className="h-1.5 w-1.5 rounded-full bg-accent" />
+    <div className="w-full">
+      <div className="mx-auto w-full max-w-350 px-5 py-8 sm:px-8 sm:py-10 lg:px-12 lg:py-12">
+        <header className="border-b border-border pb-8">
+          <div className="flex flex-col justify-between gap-6 sm:flex-row sm:items-end">
+            <div>
+              <div className="mb-3 flex items-center gap-2">
+                <span className="h-1.5 w-1.5 rounded-full bg-accent" />
+                <span className="text-[9px] font-medium uppercase tracking-[0.16em] text-text-faint">
+                  AWS LPU Recruitment
+                </span>
+              </div>
 
-            <span className="text-[9px] font-medium uppercase tracking-[0.16em] text-text-faint">
-              AWS LPU Recruitment
-            </span>
+              <h1 className="text-[clamp(2rem,5vw,3.2rem)] font-semibold leading-none tracking-[-0.055em]">
+                Applications
+              </h1>
+
+              <p className="mt-3 max-w-130 text-[12px] leading-5 text-text-muted">
+                Review recruitment activity and handle
+                applications that need your attention.
+              </p>
+            </div>
+
+            <div className="flex flex-col gap-4 sm:items-end">
+              <Link
+                href="/dashboard/announcements"
+                className="inline-flex items-center justify-center border border-border bg-surface px-4 py-2.5 text-[9px] font-medium uppercase tracking-widest text-foreground transition hover:border-border-strong hover:bg-surface-muted"
+              >
+                Manage announcements
+                <span className="ml-2 text-text-faint">
+                  →
+                </span>
+              </Link>
+
+              <div className="text-left sm:text-right">
+                <div className="text-[9px] uppercase tracking-[0.14em] text-text-faint">
+                  Signed in as
+                </div>
+
+                <div className="mt-1 text-[11px] font-medium">
+                  {_user.name}
+                </div>
+
+                <div className="mt-0.5 text-[9px] text-text-faint">
+                  {_user.role}
+                </div>
+              </div>
+            </div>
           </div>
-
-          <h1 className="text-[clamp(2rem,5vw,3.2rem)] font-semibold leading-none tracking-[-0.055em]">
-            Applications
-          </h1>
-
-          <p className="mt-3 max-w-130 text-[12px] leading-5 text-text-muted">
-            Review recruitment activity and handle applications that need
-            your attention.
-          </p>
         </header>
 
         <section className="mt-7 grid grid-cols-2 border border-border bg-surface sm:grid-cols-4">
-          <Stat label="Total" value={stats.total} />
-          <Stat label="Pending" value={stats.pending} />
-          <Stat label="Shortlisted" value={stats.shortlisted} />
-          <Stat label="Selected" value={stats.selected} />
+          {[
+            ["Total", stats.total],
+            ["Pending", stats.pending],
+            ["Shortlisted", stats.shortlisted],
+            ["Selected", stats.selected],
+          ].map(([label, value], index) => (
+            <div
+              key={label}
+              className={`px-5 py-6 sm:px-6 ${
+                index > 0 ? "border-l border-border" : ""
+              }`}
+            >
+              <div className="text-[9px] font-medium uppercase tracking-[0.14em] text-text-faint">
+                {label}
+              </div>
+
+              <div className="mt-3 text-3xl font-semibold tracking-tighter">
+                {value}
+              </div>
+            </div>
+          ))}
         </section>
 
-        <section className="mt-8">
-          <div className="mb-4 flex items-end justify-between gap-4">
-            <div>
-              <div className="text-[9px] font-medium uppercase tracking-[0.14em] text-text-faint">
-                Needs attention
+        <section className="mt-10 grid gap-8 lg:grid-cols-[minmax(0,1fr)_280px]">
+          <div>
+            <div className="mb-5 flex items-end justify-between gap-4">
+              <div>
+                <div className="text-[9px] font-medium uppercase tracking-[0.14em] text-text-faint">
+                  Needs attention
+                </div>
+
+                <h2 className="mt-2 text-xl font-semibold tracking-[-0.035em]">
+                  Pending applications
+                </h2>
               </div>
 
-              <h2 className="mt-2 text-xl font-semibold tracking-[-0.035em]">
-                Pending applications
-              </h2>
+              <Link
+                href="/applications"
+                className="text-[9px] font-medium uppercase tracking-widest text-text-muted transition hover:text-foreground"
+              >
+                View all →
+              </Link>
             </div>
 
-            <Link
-              href="/applications"
-              className="text-[9px] font-medium uppercase tracking-widest text-text-muted transition hover:text-foreground"
-            >
-              View all →
-            </Link>
-          </div>
-
-          <div className="border border-border bg-surface">
-            {loading ? (
-              <div className="px-5 py-12 text-center text-[11px] text-text-faint">
-                Loading applications...
-              </div>
-            ) : needsAttention.length === 0 ? (
-              <div className="px-5 py-12 text-center text-[11px] text-text-faint">
-                No pending applications.
-              </div>
-            ) : (
-              <div>
-                {needsAttention.map((application) => (
+            <div className="border border-border bg-surface">
+              {loading ? (
+                <div className="px-5 py-12 text-center text-[11px] text-text-faint">
+                  Loading applications...
+                </div>
+              ) : needsAttention.length === 0 ? (
+                <div className="px-5 py-12 text-center text-[11px] text-text-faint">
+                  No pending applications.
+                </div>
+              ) : (
+                needsAttention.map((application) => (
                   <Link
                     key={application.applicationId}
                     href={`/applications/${application.applicationId}`}
@@ -272,43 +272,122 @@ export default function AdminDashboard({
                       </div>
 
                       <div className="mt-1 truncate text-[9px] text-text-faint">
-                        {application.universityEmail}
+                        {application.universityEmail ||
+                          application.personalEmail}
                       </div>
                     </div>
 
-                    <div className="hidden min-w-30 text-[10px] text-text-muted sm:block">
+                    <div className="hidden min-w-35 text-[10px] text-text-muted sm:block">
                       {application.preferredRole}
                     </div>
 
-                    <StatusBadge status={application.status} />
+                    <StatusBadge
+                      status={application.status}
+                    />
 
-                    <span className="text-text-faint">→</span>
+                    <span className="text-text-faint">
+                      →
+                    </span>
                   </Link>
-                ))}
-              </div>
-            )}
+                ))
+              )}
+            </div>
           </div>
-        </section>
 
-        <section className="mt-10">
-          <div className="mb-5">
+          <aside className="border border-border bg-surface p-6">
             <div className="text-[9px] font-medium uppercase tracking-[0.14em] text-text-faint">
-              Application directory
+              Recruitment overview
             </div>
 
-            <h2 className="mt-2 text-xl font-semibold tracking-[-0.035em]">
-              Find an applicant
-            </h2>
+            <div className="mt-7">
+              <div className="flex items-end justify-between">
+                <span className="text-[10px] text-text-muted">
+                  Reviewed
+                </span>
 
-            <p className="mt-1 text-[10px] text-text-muted">
-              Search when you need a specific application.
-            </p>
+                <span className="text-xl font-semibold tracking-[-0.04em]">
+                  {stats.total
+                    ? Math.round(
+                        ((stats.total - stats.pending) /
+                          stats.total) *
+                          100
+                      )
+                    : 0}
+                  %
+                </span>
+              </div>
+
+              <div className="mt-3 h-1 bg-surface-muted">
+                <div
+                  className="h-full bg-foreground"
+                  style={{
+                    width: `${
+                      stats.total
+                        ? Math.min(
+                            100,
+                            ((stats.total - stats.pending) /
+                              stats.total) *
+                              100
+                          )
+                        : 0
+                    }%`,
+                  }}
+                />
+              </div>
+            </div>
+
+            <div className="mt-8 border-t border-border pt-5">
+              <div className="text-[9px] font-medium uppercase tracking-[0.14em] text-text-faint">
+                Pipeline
+              </div>
+
+              <div className="mt-5 space-y-4">
+                {[
+                  ["Pending", stats.pending],
+                  ["Shortlisted", stats.shortlisted],
+                  ["Selected", stats.selected],
+                ].map(([label, value]) => (
+                  <div
+                    key={String(label)}
+                    className="flex items-center justify-between"
+                  >
+                    <span className="text-[10px] text-text-muted">
+                      {label}
+                    </span>
+
+                    <span className="text-[11px] font-semibold">
+                      {value}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </aside>
+        </section>
+
+        <section className="mt-12">
+          <div className="mb-5 flex flex-col justify-between gap-3 sm:flex-row sm:items-end">
+            <div>
+              <div className="text-[9px] font-medium uppercase tracking-[0.14em] text-text-faint">
+                Application directory
+              </div>
+
+              <h2 className="mt-2 text-xl font-semibold tracking-[-0.035em]">
+                Find an applicant
+              </h2>
+            </div>
+
+            <span className="text-[9px] text-text-faint">
+              {filteredApplications.length} results
+            </span>
           </div>
 
           <div className="flex flex-col gap-3 sm:flex-row">
             <input
               value={search}
-              onChange={(event) => setSearch(event.target.value)}
+              onChange={(event) =>
+                setSearch(event.target.value)
+              }
               placeholder="Search name, email, registration number..."
               className="h-10 flex-1 border border-border bg-surface px-4 text-[11px] outline-none transition placeholder:text-text-faint focus:border-border-strong"
             />
@@ -326,7 +405,9 @@ export default function AdminDashboard({
             >
               <option value="All">All statuses</option>
               <option value="Pending">Pending</option>
-              <option value="Shortlisted">Shortlisted</option>
+              <option value="Shortlisted">
+                Shortlisted
+              </option>
               <option value="Interview Scheduled">
                 Interview Scheduled
               </option>
@@ -346,55 +427,83 @@ export default function AdminDashboard({
               </div>
             ) : (
               <>
+                <div className="hidden grid-cols-[1fr_220px_150px_24px] gap-5 border-b border-border bg-surface-muted px-5 py-3 sm:grid">
+                  <span className="text-[8px] font-medium uppercase tracking-[0.14em] text-text-faint">
+                    Applicant
+                  </span>
+
+                  <span className="text-[8px] font-medium uppercase tracking-[0.14em] text-text-faint">
+                    Role / Academic
+                  </span>
+
+                  <span className="text-[8px] font-medium uppercase tracking-[0.14em] text-text-faint">
+                    Status
+                  </span>
+                </div>
+
                 <div className="divide-y divide-border">
-                  {visibleApplications.map((application) => (
-                    <Link
-                      key={application.applicationId}
-                      href={`/applications/${application.applicationId}`}
-                      className="flex flex-col gap-3 px-5 py-4 transition-colors hover:bg-surface-muted sm:flex-row sm:items-center sm:px-6"
-                    >
-                      <div className="flex min-w-0 flex-1 items-center gap-3">
-                        <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-surface-muted text-[9px] font-medium">
-                          {application.fullName
-                            .charAt(0)
-                            .toUpperCase()}
-                        </div>
-
-                        <div className="min-w-0">
-                          <div className="truncate text-[11px] font-medium">
-                            {application.fullName}
+                  {visibleApplications.map(
+                    (application) => (
+                      <Link
+                        key={application.applicationId}
+                        href={`/applications/${application.applicationId}`}
+                        className="grid gap-3 px-5 py-4 transition-colors hover:bg-surface-muted sm:grid-cols-[1fr_220px_150px_24px] sm:items-center sm:gap-5"
+                      >
+                        <div className="flex min-w-0 items-center gap-3">
+                          <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-surface-muted text-[9px] font-medium">
+                            {application.fullName
+                              .charAt(0)
+                              .toUpperCase()}
                           </div>
 
-                          <div className="mt-0.5 truncate text-[9px] text-text-faint">
-                            {application.universityEmail}
+                          <div className="min-w-0">
+                            <div className="truncate text-[11px] font-medium">
+                              {application.fullName}
+                            </div>
+
+                            <div className="mt-0.5 truncate text-[9px] text-text-faint">
+                              {application.universityEmail ||
+                                application.personalEmail}
+                            </div>
+
+                            <div className="mt-0.5 truncate text-[8px] uppercase tracking-[0.06em] text-text-faint">
+                              {application.applicationId}
+                            </div>
                           </div>
                         </div>
-                      </div>
 
-                      <div className="flex items-center gap-5 sm:min-w-80 sm:justify-end">
-                        <div className="hidden text-right sm:block">
-                          <div className="text-[10px] text-text-muted">
+                        <div className="pl-11 sm:pl-0">
+                          <div className="truncate text-[10px] text-text-muted">
                             {application.preferredRole}
                           </div>
 
-                          <div className="mt-0.5 text-[9px] text-text-faint">
-                            {application.program} · {application.branch}
+                          <div className="mt-0.5 truncate text-[9px] text-text-faint">
+                            {application.program} ·{" "}
+                            {application.branch}
                           </div>
                         </div>
 
-                        <StatusBadge status={application.status} />
+                        <div className="pl-11 sm:pl-0">
+                          <StatusBadge
+                            status={application.status}
+                          />
+                        </div>
 
-                        <span className="text-text-faint">→</span>
-                      </div>
-                    </Link>
-                  ))}
+                        <span className="hidden text-right text-text-faint sm:block">
+                          →
+                        </span>
+                      </Link>
+                    )
+                  )}
                 </div>
 
                 <div className="flex items-center justify-between border-t border-border px-5 py-4">
                   <span className="text-[9px] text-text-faint">
                     {filteredApplications.length === 0
                       ? 0
-                      : (currentPage - 1) * PAGE_SIZE + 1}
+                      : (currentPage - 1) *
+                          PAGE_SIZE +
+                        1}
                     –
                     {Math.min(
                       currentPage * PAGE_SIZE,
@@ -423,10 +532,15 @@ export default function AdminDashboard({
 
                     <button
                       type="button"
-                      disabled={currentPage === totalPages}
+                      disabled={
+                        currentPage === totalPages
+                      }
                       onClick={() =>
                         setPage((value) =>
-                          Math.min(totalPages, value + 1)
+                          Math.min(
+                            totalPages,
+                            value + 1
+                          )
                         )
                       }
                       className="border border-border px-3 py-1.5 text-[9px] text-text-muted transition hover:border-border-strong hover:text-foreground disabled:pointer-events-none disabled:opacity-30"
@@ -439,11 +553,7 @@ export default function AdminDashboard({
             )}
           </div>
         </section>
-
-        <footer className="mt-8 border-t border-border pt-5 text-[9px] text-text-faint">
-          AWS LPU Recruitment Management Portal
-        </footer>
       </div>
-    </main>
+    </div>
   );
 }
