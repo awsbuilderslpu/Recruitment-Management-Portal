@@ -15,6 +15,8 @@ const MAIL_API_URL =
 const SENDER_NAME = "AWS Student Builder Group";
 const SENDER_ROLE = "Recruitment Team";
 
+const WHATSAPP_INVITE = process.env.AWS_LPU_WHATSAPP_GROUP_INVITE_URL;
+
 function getStatusMail(
   name: string,
   status: ApplicationStatus
@@ -51,7 +53,7 @@ function getStatusMail(
         greeting: `Dear ${name},`,
         heading: "Interview Scheduled",
         content:
-          "Your AWS LPU recruitment application has progressed to the interview stage.\n\nFurther details regarding your interview will be shared with you shortly.\n\nPlease visit https://recruitment.awslpu.in for more information.",
+          "Your AWS LPU recruitment application has progressed to the interview stage.\n\nPlease visit https://recruitment.awslpu.in for more information.",
         senderName: SENDER_NAME,
         senderRole: SENDER_ROLE,
       };
@@ -63,7 +65,7 @@ function getStatusMail(
         greeting: `Dear ${name},`,
         heading: "Application Selected",
         content:
-          "Congratulations! We are pleased to inform you that you have been selected through the AWS LPU recruitment process.\n\nFurther details and next steps will be shared with you shortly.\n\nPlease visit https://recruitment.awslpu.in for more information.",
+          "Congratulations! We are pleased to inform you that you have been selected through the AWS LPU recruitment process.\n\nPlease accept the offer from the AWS LPU Recruitment Website & follow the instructions provided.\n\nPlease visit https://recruitment.awslpu.in for more information.",
         senderName: SENDER_NAME,
         senderRole: SENDER_ROLE,
       };
@@ -87,7 +89,7 @@ function getStatusMail(
         greeting: `Dear ${name},`,
         heading: "Offer Accepted",
         content:
-          "Congratulations! We are pleased to inform you that you have accepted the offer for the position at AWS LPU.\n\nPlease find the attached offer letter for your reference.\n\nPlease visit https://recruitment.awslpu.in for more information.",
+          "Congratulations! On accepting the offer, you are now a part of the AWS LPU team.\n\nPlease visit https://recruitment.awslpu.in for more information.\n\nJoin the AWSLPU WhatsApp group: ${WHATSAPP_INVITE} | Do your part in making the AWS LPU community a better place.\n\nNote: Do not share the AWS LPU WhatsApp group link with anyone other than the intended recipients.",
         senderName: SENDER_NAME,
         senderRole: SENDER_ROLE,
       };
