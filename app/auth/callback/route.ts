@@ -124,9 +124,28 @@ export async function GET(request: NextRequest) {
     );
   }
 
+  const user = await userResponse.json();
+
+  if (
+    typeof user.sub !== "string" ||
+    typeof user.name !== "string" ||
+    typeof user.email !== "string" ||
+    typeof user.role !== "string"
+  ) {
+    return NextResponse.json(
+      {
+        error: "Invalid user information",
+      },
+      { status: 400 }
+    );
+  }
+
   const response = NextResponse.redirect(
     new URL("/auth/success", request.url)
   );
+
+  const sessionMaxAge =
+    Number(tokens.expires_in) || 60 * 60 * 24 * 30;
 
   response.cookies.set(
     "aws_lpu_access_token",
@@ -136,9 +155,7 @@ export async function GET(request: NextRequest) {
       secure: process.env.NODE_ENV === "production",
       sameSite: "lax",
       path: "/",
-      ...(tokens.expires_in
-        ? { maxAge: tokens.expires_in }
-        : {}),
+      maxAge: sessionMaxAge,
     }
   );
 
@@ -147,5 +164,4 @@ export async function GET(request: NextRequest) {
   response.cookies.delete("aws_lpu_code_verifier");
 
   return response;
-
 }
